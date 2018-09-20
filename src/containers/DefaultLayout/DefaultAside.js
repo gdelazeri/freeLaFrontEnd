@@ -42,7 +42,7 @@ class DefaultAside extends Component {
                      onClick={() => {
                        this.toggle('1');
                      }}>
-              <i className="icon-list"></i>
+              <i className="comments-o"></i>
             </NavLink>
           </NavItem>
           <NavItem>
