@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 
+import FreeLaApi from '../../services/freeLaApi';
 import Client from './Client'
 import ClientForm from './ClientForm'
 import usersData from './UsersData'
@@ -12,7 +13,8 @@ class Users extends Component {
 
     this.state = {
       client: undefined,
-      clientForm: undefined
+      clientForm: undefined,
+      clients: [],
     }
 
     this.toggleClientDetails = this.toggleClientDetails.bind(this);
@@ -22,25 +24,25 @@ class Users extends Component {
     this.handleClientFormReset = this.handleClientFormReset.bind(this);
   }
 
+  componentDidMount(){
+    this.getAllClients();  
+  }
+
+  async getAllClients(){
+    const clients = await FreeLaApi.clientList();
+    this.setState({ clients: clients.data });
+  }
+
   toggleClientDetails(client) {
     this.setState({ client });
   }
 
   row(client) {
-    const getBadge = (status) => {
-      return status === 'Active' ? 'success' :
-        status === 'Inactive' ? 'secondary' :
-          status === 'Pending' ? 'warning' :
-            status === 'Banned' ? 'danger' :
-              'primary'
-    }
-  
     return (
       <tr onClick={() => this.toggleClientDetails(client)} key={client.id.toString()}>
           <td>{client.name}</td>
-          <td>{client.registered}</td>
-          <td>{client.role}</td>
-          <td><Badge color={getBadge(client.status)}>{client.status}</Badge></td>
+          <td>{client.email}</td>
+          <td>{client.phone1}</td>
       </tr>
     )
   }
@@ -53,13 +55,17 @@ class Users extends Component {
     });
   }
 
-  handleClientFormSubmit(){
+  async handleClientFormSubmit(){
     const client = this.state.clientForm;
     if (client) {
       if (client.id) {
-        // ADD
-      } else {
         // EDIT
+      } else {
+        const resp = await FreeLaApi.clientAdd(client);
+        if (resp.success) {
+          this.setState({ client: resp.data });
+          this.getAllClients();
+        }
       }
     }
   }
@@ -71,7 +77,6 @@ class Users extends Component {
   }
 
   render() {
-    const userList = usersData.filter((user) => user.id < 10)
     return (
       <div className="animated fadeIn">
         <Row>
@@ -88,17 +93,16 @@ class Users extends Component {
               </CardHeader>
               <CardBody>
                 <Table hover responsive className="table-outline mb-0 d-sm-table">
-                  <thead className="thead-light text-capitalize">
+                  <thead className="thead-light">
                     <tr>
-                      <th>name</th>
-                      <th>registered</th>
-                      <th>role</th>
-                      <th>status</th>
+                      <th>Nome</th>
+                      <th>E-mail</th>
+                      <th>Telefone</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {userList.map((user, index) =>
-                      this.row(user)
+                    {this.state.clients.map(item =>
+                      this.row(item)
                     )}
                   </tbody>
                 </Table>

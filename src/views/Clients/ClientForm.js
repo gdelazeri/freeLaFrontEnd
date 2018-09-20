@@ -24,11 +24,9 @@ class ClientForm extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    console.log({nextProps})
     this.setState({
       client: nextProps.data || { },
     })
-    console.log({ state: this.state })
   }
 
   render() {
