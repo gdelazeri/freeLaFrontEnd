@@ -37,7 +37,8 @@
     "react-scripts": "^1.1.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node app",
+    "dev": "react-scripts start",
     "build": "react-scripts build"
   }
 }
