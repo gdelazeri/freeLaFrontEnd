@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import {
   Button,
   Card,
@@ -8,7 +9,6 @@ import {
   Col,
   Form,
   FormGroup,
-  FormText,
   Input,
   Label,
 } from 'reactstrap';
@@ -19,7 +19,7 @@ class ClientForm extends Component {
     super(props);
 
     this.state = {
-      client: this.props.data || {},
+      client: this.props.data || { },
     }
   }
 
@@ -33,16 +33,17 @@ class ClientForm extends Component {
     return (
         <Card>
           <CardHeader>
-            <strong>Adicionar cliente</strong>
+            <strong>{this.state.client && this.state.client.id ? 'Editar' : 'Adicionar'} cliente</strong>
           </CardHeader>
           <CardBody>
-            <Form action="" method="post" encType="multipart/form-data" className="form-horizontal">
+            <Form method="post" encType="multipart/form-data" className="form-horizontal">
+              <Input value={!this.state.client.id ? undefined : this.state.client.id} onChange={this.props.handleInput} type="hidden" id="id-input" name="id" />
               <FormGroup row>
                 <Col md="3">
                   <Label htmlFor="text-input">Nome</Label>
                 </Col>
                 <Col xs="12" md="9">
-                  <Input value={this.state.client.name} onChange={this.props.handleInput} type="text" id="text-input" name="name" placeholder="Digite o nome completo" />
+                  <Input value={!this.state.client.name ? '' : this.state.client.name} onChange={this.props.handleInput} type="text" id="text-input" name="name" placeholder="Digite o nome completo" />
                 </Col>
               </FormGroup>
               <FormGroup row>
@@ -50,7 +51,7 @@ class ClientForm extends Component {
                   <Label htmlFor="email-input">E-mail</Label>
                 </Col>
                 <Col xs="12" md="9">
-                  <Input value={this.state.client.email} onChange={this.props.handleInput} type="email" id="email-input" name="email" placeholder="Digite o e-mail" autoComplete="email"/>
+                  <Input value={!this.state.client.email ? '' : this.state.client.email} onChange={this.props.handleInput} type="email" id="email-input" name="email" placeholder="Digite o e-mail" autoComplete="email"/>
                 </Col>
               </FormGroup>
               <FormGroup row>
@@ -58,8 +59,7 @@ class ClientForm extends Component {
                   <Label htmlFor="cpf-input">CPF</Label>
                 </Col>
                 <Col xs="12" md="9">
-                  <Input value={this.state.client.cpf} onChange={this.props.handleInput} type="text" maxLength={9} id="cpf-input" name="cpf" placeholder="Informe o CPF" />
-                  <FormText color="muted">Somente números</FormText>
+                  <Input value={!this.state.client.cpf ? '' : this.state.client.cpf} onChange={this.props.handleInput} type="text" maxLength={11  } id="cpf-input" name="cpf" placeholder="Informe o CPF (somente números)" />
                 </Col>
               </FormGroup>
               <FormGroup row>
@@ -67,7 +67,7 @@ class ClientForm extends Component {
                   <Label htmlFor="birthDate-input">Nascimento</Label>
                 </Col>
                 <Col xs="12" md="9">
-                  <Input value={this.state.client.birthDate} onChange={this.props.handleInput} type="date" id="birthDate-input" name="birthDate" />
+                  <Input value={!this.state.client.birthdate ? '' : moment(this.state.client.birthdate).format('YYYY-MM-DD')} onChange={this.props.handleInput} type="date" id="birthDate-input" name="birthdate" />
                 </Col>
               </FormGroup>
               <FormGroup row>
@@ -75,7 +75,7 @@ class ClientForm extends Component {
                   <Label htmlFor="phone1-input">Telefone 1</Label>
                 </Col>
                 <Col xs="12" md="9">
-                  <Input value={this.state.client.phone1} onChange={this.props.handleInput} type="text" maxLength={12} id="phone1-input" name="phone1" />
+                  <Input value={!this.state.client.phone1 ? '' : this.state.client.phone1} onChange={this.props.handleInput} type="text" maxLength={12} id="phone1-input" name="phone1" />
                 </Col>
               </FormGroup>
               <FormGroup row>
@@ -83,7 +83,7 @@ class ClientForm extends Component {
                   <Label htmlFor="phone2-input">Telefone 2</Label>
                 </Col>
                 <Col xs="12" md="9">
-                  <Input value={this.state.client.phone2} onChange={this.props.handleInput} type="text" maxLength={12} id="phone2-input" name="phone2" />
+                  <Input value={!this.state.client.phone2 ? '' : this.state.client.phone2} onChange={this.props.handleInput} type="text" maxLength={12} id="phone2-input" name="phone2" />
                 </Col>
               </FormGroup>
               <FormGroup row>
@@ -91,7 +91,7 @@ class ClientForm extends Component {
                   <Label htmlFor="photo-input">Foto</Label>
                 </Col>
                 <Col xs="12" md="9">
-                  <Input value={this.state.client.photo} onChange={this.props.handleInput} type="file" id="photo-input" name="photo" />
+                  <Input value={!this.state.client.photo ? '' : this.state.client.photo} onChange={this.props.handleInput} type="file" id="photo-input" name="photo" />
                 </Col>
               </FormGroup>
             </Form>

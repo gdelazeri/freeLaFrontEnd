@@ -20,6 +20,19 @@ class FreeLaApi {
       })
   }
 
+  static async clientEdit(client) {
+    return new Promise((resolve, reject) => {
+      axios.put(`${HEROKU_ENDPOINT}/client/edit/${client.id}`, client)
+        .then( (res) => {
+          const response = JSON.parse(res.request.response);
+          resolve(response);
+        }).catch((error) => {
+          const response = JSON.parse(error.request.response);
+          reject(response);
+        })
+      })
+  }
+
   static async clientList(professionalId) {
     return new Promise((resolve, reject) => {
       axios.get(`${HEROKU_ENDPOINT}/client/list/${professionalId ? professionalId : ''}`)

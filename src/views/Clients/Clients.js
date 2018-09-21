@@ -1,10 +1,19 @@
 import React, { Component } from 'react';
-import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import { Button, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 
 import FreeLaApi from '../../services/freeLaApi';
 import Client from './Client'
 import ClientForm from './ClientForm'
-import usersData from './UsersData'
+
+const clientModel = {
+  name: undefined,
+  email: undefined,
+  birthdate: undefined,
+  cpf: undefined,
+  phone1: undefined,
+  phone2: undefined,
+  createdat: undefined,
+}
 
 class Users extends Component {
 
@@ -18,10 +27,10 @@ class Users extends Component {
     }
 
     this.toggleClientDetails = this.toggleClientDetails.bind(this);
-    this.row = this.row.bind(this);
     this.handleClientFormInput = this.handleClientFormInput.bind(this);
     this.handleClientFormSubmit = this.handleClientFormSubmit.bind(this);
     this.handleClientFormReset = this.handleClientFormReset.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
   }
 
   componentDidMount(){
@@ -37,16 +46,6 @@ class Users extends Component {
     this.setState({ client });
   }
 
-  row(client) {
-    return (
-      <tr onClick={() => this.toggleClientDetails(client)} key={client.id.toString()}>
-          <td>{client.name}</td>
-          <td>{client.email}</td>
-          <td>{client.phone1}</td>
-      </tr>
-    )
-  }
-
   handleClientFormInput(e) {
     const name = e.target.name;
     const value = e.target.value;
@@ -59,7 +58,11 @@ class Users extends Component {
     const client = this.state.clientForm;
     if (client) {
       if (client.id) {
-        // EDIT
+        const resp = await FreeLaApi.clientEdit(client);
+        if (resp.success) {
+          this.setState({ client: resp.data });
+          this.getAllClients();
+        }
       } else {
         const resp = await FreeLaApi.clientAdd(client);
         if (resp.success) {
@@ -72,7 +75,14 @@ class Users extends Component {
 
   handleClientFormReset(){
     this.setState({ 
-      clientForm: undefined,
+      clientForm: clientModel,
+    });
+  }
+
+  handleEdit(client) {
+    this.setState({ 
+      clientForm: client,
+      client: undefined,
     });
   }
 
@@ -81,10 +91,8 @@ class Users extends Component {
       <div className="animated fadeIn">
         <Row>
           <Col xl={6}>
-            {this.state.client && <Client data={this.state.client} />}
-            {!this.state.client && 
-              <ClientForm data={this.state.clientForm} handleInput={this.handleClientFormInput} handleSubmit={this.handleClientFormSubmit} handleReset={this.handleClientFormReset} />
-            }
+            {this.state.client && <Client data={this.state.client} handleEdit={this.handleEdit} />}
+            {!this.state.client && <ClientForm data={this.state.clientForm} handleInput={this.handleClientFormInput} handleSubmit={this.handleClientFormSubmit} handleReset={this.handleClientFormReset} />}
           </Col>
           <Col xl={6}>
             <Card>
@@ -97,12 +105,16 @@ class Users extends Component {
                     <tr>
                       <th>Nome</th>
                       <th>E-mail</th>
-                      <th>Telefone</th>
+                      <th width='10%'></th>
                     </tr>
                   </thead>
                   <tbody>
                     {this.state.clients.map(item =>
-                      this.row(item)
+                      <tr key={item.id.toString()}>
+                        <td><a onClick={() => this.toggleClientDetails(item)}><b>{item.name}</b></a></td>
+                        <td>{item.email}</td>
+                        <td><Button type="button" onClick={() => this.handleEdit(item)} size="sm" color="warning"><i className="fa fa-pencil"></i></Button></td>
+                      </tr> 
                     )}
                   </tbody>
                 </Table>
