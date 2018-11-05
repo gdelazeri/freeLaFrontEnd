@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
-
+import Auth from '../../helpers/auth';
 import FreeLaApi from '../../services/freeLaApi';
 import Client from './Client'
 import ClientForm from './ClientForm'
@@ -15,10 +15,11 @@ const clientModel = {
   createdat: undefined,
 }
 
-class Users extends Component {
+class Clients extends Component {
 
   constructor(props) {
     super(props);
+    Auth.checkSession();
 
     this.state = {
       client: undefined,
@@ -128,4 +129,4 @@ class Users extends Component {
   }
 }
 
-export default Users;
+export default Clients;

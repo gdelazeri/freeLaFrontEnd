@@ -1,4 +1,4 @@
 {
-    "HEROKU_ENDPOINT": "https://freelaapi.herokuapp.com"
+    "HEROKU_ENDPOINT": "http://localhost:3001"
 }
   

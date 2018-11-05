@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Row, Col, Card, CardBody, CardHeader, Button } from 'reactstrap';
 import moment from 'moment';
 
-class User extends Component {
+class Client extends Component {
 
   constructor(props) {
     super(props);
@@ -53,4 +53,4 @@ class User extends Component {
   }
 }
 
-export default User;
+export default Client;
