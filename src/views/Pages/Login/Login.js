@@ -20,7 +20,6 @@ class Login extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    console.log(this.state)
     const user = await FreeLaApi.login(this.state.user);
     if (user.success && user.data.length === 1) {
       Auth.setSession(user.data[0]);
@@ -84,10 +83,9 @@ class Login extends Component {
                 <Card className="text-white bg-primary py-5 d-md-down-none" style={{ width: 44 + '%' }}>
                   <CardBody className="text-center">
                     <div>
-                      <h2>Sign up</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.</p>
-                      <Button color="primary" className="mt-3" active>Register Now!</Button>
+                      <h2>Participe!</h2>
+                      <p>Se você é freelancer, cadastre-se para organizar seus projetos e clientes.</p>
+                      <a href='/#/register' className="btn btn-secondary mt-3" active>Registrar-se já!</a>
                     </div>
                   </CardBody>
                 </Card>

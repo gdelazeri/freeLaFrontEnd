@@ -18,6 +18,8 @@ import {
 } from 'reactstrap';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
+import Auth from '../../helpers/auth';
+Auth.checkSession();
 
 const brandPrimary = getStyle('--primary')
 const brandSuccess = getStyle('--success')
@@ -239,6 +241,7 @@ for (var i = 0; i <= elements; i++) {
 class Dashboard extends Component {
   constructor(props) {
     super(props);
+    Auth.checkSession();
   }
 
   render() {

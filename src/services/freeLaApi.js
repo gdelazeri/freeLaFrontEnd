@@ -86,6 +86,46 @@ class FreeLaApi {
       })
   }
 
+  static async projectAdd(project) {
+    delete project.confirmPassword;
+    return new Promise((resolve, reject) => {
+      axios.post(`${HEROKU_ENDPOINT}/project/add`, project)
+        .then( (res) => {
+          const response = JSON.parse(res.request.response);
+          resolve(response);
+        }).catch((error) => {
+          const response = JSON.parse(error.request.response);
+          reject(response);
+        })
+      })
+  }
+
+  static async projectEdit(project) {
+    return new Promise((resolve, reject) => {
+      axios.put(`${HEROKU_ENDPOINT}/project/edit/${project.id}`, project)
+        .then( (res) => {
+          const response = JSON.parse(res.request.response);
+          resolve(response);
+        }).catch((error) => {
+          const response = JSON.parse(error.request.response);
+          reject(response);
+        })
+      })
+  }
+
+  static async projectList(professionalId) {
+    return new Promise((resolve, reject) => {
+      axios.get(`${HEROKU_ENDPOINT}/project/list/${professionalId}`)
+        .then( (res) => {
+          const response = JSON.parse(res.request.response);
+          resolve(response);
+        }).catch((error) => {
+          const response = JSON.parse(error.request.response);
+          reject(response);
+        })
+      })
+  }
+
   static async login(user) {
     console.log({user});
     return new Promise((resolve, reject) => {
