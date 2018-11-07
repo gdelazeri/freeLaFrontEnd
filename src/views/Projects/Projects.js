@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Button, Card, CardBody, CardHeader, Col, Row, Table, Modal } from 'reactstrap';
 import Auth from '../../helpers/auth';
 import FreeLaApi from '../../services/freeLaApi';
-import Client from './Client'
 
 class Projects extends Component {
 
@@ -39,7 +38,7 @@ class Projects extends Component {
           <Col xl={12}>
             <Card>
               <CardHeader>
-                <strong><i className="fa fa-users"></i>  Projetos</strong>
+                <strong><i className="fa fa-business"></i>  Projetos</strong>
               </CardHeader>
               <CardBody>
                 <Table hover responsive className="table-outline mb-0 d-sm-table">

@@ -87,7 +87,6 @@ class FreeLaApi {
   }
 
   static async projectAdd(project) {
-    delete project.confirmPassword;
     return new Promise((resolve, reject) => {
       axios.post(`${HEROKU_ENDPOINT}/project/add`, project)
         .then( (res) => {
