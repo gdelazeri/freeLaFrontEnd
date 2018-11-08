@@ -39,6 +39,7 @@ class Projects extends Component {
             <Card>
               <CardHeader>
                 <strong><i className="fa fa-business"></i>  Projetos</strong>
+                <a className="btn btn-sm btn-success pull-right" href="/#/projectAdd"><i className="fa fa-plus"></i> Novo</a>
               </CardHeader>
               <CardBody>
                 <Table hover responsive className="table-outline mb-0 d-sm-table">

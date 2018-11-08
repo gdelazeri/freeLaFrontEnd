@@ -12,6 +12,7 @@ import {
   FormGroup,
   Input,
   Label,
+  Alert,
 } from 'reactstrap';
 import FreeLaApi from '../../services/freeLaApi'
 
@@ -20,7 +21,8 @@ class ClientForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      project: { }
+      project: { },
+      error: 'Erro',
     }
 
     this.handleInput = this.handleInput.bind(this);
@@ -35,10 +37,14 @@ class ClientForm extends Component {
     }
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
+  async handleSubmit() {
     const project = this.state.project;
-    FreeLaApi.projectAdd(project);
+    const reponse = await FreeLaApi.projectAdd(project);
+    if (Response.success) {
+      window.location.href = '/#/projects';
+    } else {
+      this.setState({ error: 'Erro ao salvar o projeto, confira se os campos obrigatórios foram preenchidos e salve novamente' });
+    }
     return false;
   }
 
@@ -53,6 +59,7 @@ class ClientForm extends Component {
               </CardHeader>
               <CardBody>
                 <Form encType="multipart/form-data" className="form-horizontal" onSubmit={this.handleSubmit}>
+                {this.state.error && <Alert color="danger">{this.state.error}</Alert>}
                 <Row>
                   <Col md="6">
                     <FormGroup>
@@ -62,24 +69,54 @@ class ClientForm extends Component {
                   </Col>
                   <Col md="3">
                     <FormGroup>
+                        <Label htmlFor="text-input">Valor total</Label>
+                        <Input required value={this.state.project.totalValue} onChange={this.handleInput} type="text" name="totalValue" />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md="3">
+                    <FormGroup>
                         <Label htmlFor="text-input">Data de Início*</Label>
-                        <Input required value={this.state.project.initDate} onChange={this.handleInput} type="date" name="initDate" />
+                        <Input required value={this.state.project.startDate || moment().format('YYYY-MM-DD')} onChange={this.handleInput} type="date" name="startDate" />
                     </FormGroup>
                   </Col>
                   <Col md="3">
                     <FormGroup>
-                        <Label htmlFor="text-input">Data Estimada de Fim*</Label>
-                        <Input required value={this.state.project.estimatedEndDate} onChange={this.handleInput} type="date" name="estimatedEndDate" />
+                        <Label htmlFor="text-input">Data de Fim*</Label>
+                        <Input required value={this.state.project.endDate} onChange={this.handleInput} type="date" name="endDate" />
                     </FormGroup>
                   </Col>
-                  <br />
+                  <Col md="3">
+                    <FormGroup>
+                        <Label htmlFor="text-input">Data de Apresentação</Label>
+                        <Input required value={this.state.project.presentationDate} onChange={this.handleInput} type="date" name="presentationDate" />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
                   <Col md="12">
                     <FormGroup>
                       <Label htmlFor="text-input">Briefing do Projeto*</Label>
-                      <Input type="textarea" rows={5} value={this.state.project.briefing} onChange={this.handleInput} name="briefing" />
+                      <Input type="textarea" rows={5} value={this.state.project.briefing} onChange={this.handleInput} name="briefing" placeholder="Escreva a descrição principal do projeto, ideias e os objetivos..." />
                     </FormGroup>
                   </Col>
-                  <br />
+                </Row>
+                <Row>
+                  <Col md="6">
+                    <FormGroup>
+                      <Label htmlFor="text-input">Gostos</Label>
+                      <Input type="textarea" rows={4} value={this.state.project.likes} onChange={this.handleInput} name="likes" placeholder="Descreva as características que o cliente deseja expressar em seu projeto, gostos pessoais, imagem que gostaria de passar aos seus clientes..." />
+                    </FormGroup>
+                  </Col>
+                  <Col md="6">
+                    <FormGroup>
+                      <Label htmlFor="text-input">Desgostos</Label>
+                      <Input type="textarea" rows={4} value={this.state.project.dislikes} onChange={this.handleInput} name="dislikes" placeholder="Descreva as características que o cliente NÃO deseja expressar em seu projeto..." />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
                   <Col md="4">
                     <FormGroup>
                         <Label htmlFor="text-input">Nome do Cliente*</Label>

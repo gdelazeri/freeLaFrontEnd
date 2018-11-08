@@ -87,6 +87,7 @@ class FreeLaApi {
   }
 
   static async projectAdd(project) {
+    project.professionalId = Number(sessionStorage.getItem('userId'));
     return new Promise((resolve, reject) => {
       axios.post(`${HEROKU_ENDPOINT}/project/add`, project)
         .then( (res) => {
