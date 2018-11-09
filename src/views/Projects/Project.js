@@ -20,6 +20,7 @@ class Project extends Component {
     const project = await FreeLaApi.projectGet(this.id);
     if (project.success) {
       this.setState({ project: project.data });
+      console.log(project.data);
     }
   }
 
@@ -33,32 +34,32 @@ class Project extends Component {
           </CardHeader>
           <CardBody>
             <Row>
-              <img style={{ maxHeight: '200px', margin: '0 auto' }} className='img-responsive rounded-circle' src="https://image.freepik.com/free-icon/male-user-shadow_318-34042.jpg" />
+              <img style={{ maxHeight: '200px', margin: '0 auto' }} className='img-responsive rounded-circle' src="https://assets.pcmag.com/media/images/481950-project-management.jpg?thumb=y&width=810&height=456" />
             </Row>
             <br />
             <Row>
-              <label className='col-3 text-right'><b>CPF:</b></label>
-              <label className='col-9'>{this.state.project.cpf ? this.state.project.cpf : '-'}</label>
+              <label className='col-3 text-right'><b>Start Date:</b></label>
+              <label className='col-9'>{this.state.project.startdate ? moment(this.state.project.startdate).format('DD/MM/YYYY') : '-'}</label>
             </Row>
             <Row>
-              <label className='col-3 text-right'><b>E-mail:</b></label>
-              <label className='col-9'>{this.state.project.email ? this.state.project.email : '-'}</label>
+              <label className='col-3 text-right'><b>End Date:</b></label>
+              <label className='col-9'>{this.state.project.enddate ? moment(this.state.project.enddate).format('DD/MM/YYYY') : '-'}</label>
             </Row>
             <Row>
-              <label className='col-3 text-right'><b>Telefone 1:</b></label>
-              <label className='col-9'>{this.state.project.phone1 ? this.state.project.phone1 : '-'}</label>
+              <label className='col-3 text-right'><b>Presentation Date:</b></label>
+              <label className='col-9'>{this.state.project.presentationdate ? moment(this.state.project.presentationdate).format('DD/MM/YYYY') : '-'}</label>
             </Row>
             <Row>
-              <label className='col-3 text-right'><b>Telefone 2:</b></label>
-              <label className='col-9'>{this.state.project.phone2 ? this.state.project.phone2 : '-'}</label>
+              <label className='col-3 text-right'><b>Gostos:</b></label>
+              <label className='col-9'>{this.state.project.likes ? this.state.project.likes : '-'}</label>
             </Row>
             <Row>
-              <label className='col-3 text-right'><b>Nascimento:</b></label>
-              <label className='col-9'>{this.state.project.birthdate ? moment(this.state.project.birthdate).format('DD/MM/YYYY') : '-'}</label>
+              <label className='col-3 text-right'><b>Desgostos:</b></label>
+              <label className='col-9'>{this.state.project.dislikes ? this.state.project.dislikes : '-'}</label>
             </Row>
             <Row>
-              <label className='col-3 text-right'><b>Criado em:</b></label>
-              <label className='col-9'>{this.state.project.createdat ? moment(this.state.project.createdat).format('DD/MM/YYYY HH:MM') : '-'}</label>
+              <label className='col-3 text-right'><b>Valor Total:</b></label>
+              <label className='col-9'>R$ {this.state.project.totalvalue ? this.state.project.totalvalue : '-'}</label>
             </Row>
           </CardBody>
         </Card>
