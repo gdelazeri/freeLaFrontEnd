@@ -16,13 +16,15 @@ import {
 } from 'reactstrap';
 import FreeLaApi from '../../services/freeLaApi'
 
-class ClientForm extends Component {
+class ProjectAdd extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      project: { },
-      error: 'Erro',
+      project: {
+        
+      },
+      error: '',
     }
 
     this.handleInput = this.handleInput.bind(this);
@@ -39,8 +41,8 @@ class ClientForm extends Component {
 
   async handleSubmit() {
     const project = this.state.project;
-    const reponse = await FreeLaApi.projectAdd(project);
-    if (Response.success) {
+    const response = await FreeLaApi.projectAdd(project);
+    if (response.success) {
       window.location.href = '/#/projects';
     } else {
       this.setState({ error: 'Erro ao salvar o projeto, confira se os campos obrigatórios foram preenchidos e salve novamente' });
@@ -78,7 +80,7 @@ class ClientForm extends Component {
                   <Col md="3">
                     <FormGroup>
                         <Label htmlFor="text-input">Data de Início*</Label>
-                        <Input required value={this.state.project.startDate || moment().format('YYYY-MM-DD')} onChange={this.handleInput} type="date" name="startDate" />
+                        <Input required value={this.state.project.startDate} onChange={this.handleInput} type="date" name="startDate" />
                     </FormGroup>
                   </Col>
                   <Col md="3">
@@ -150,4 +152,4 @@ class ClientForm extends Component {
   }
 }
 
-export default ClientForm;
+export default ProjectAdd;

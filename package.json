@@ -21,6 +21,7 @@
     "moment": "^2.22.2",
     "path": "^0.12.7",
     "prop-types": "^15.6.2",
+    "query-string": "^6.2.0",
     "react": "^16.4.2",
     "react-chartjs-2": "^2.7.2",
     "react-dom": "^16.4.2",

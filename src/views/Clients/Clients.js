@@ -86,7 +86,7 @@ class Clients extends Component {
     return (
       <div className="animated fadeIn">
         <Row>
-          <Modal isOpen={this.state.client}>
+          <Modal isOpen={this.state.client} toggle={this.toggleClientDetails}>
             <Client data={this.state.client} />
           </Modal>
           <Col xl={12}>

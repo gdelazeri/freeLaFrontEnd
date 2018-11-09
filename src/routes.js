@@ -26,12 +26,18 @@ const ProjectAdd = Loadable({
   loading: Loading,
 });
 
+const Project = Loadable({
+  loader: () => import('./views/Projects/Project'),
+  loading: Loading,
+});
+
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/clients', exact: true,  name: 'Clients', component: Clients },
   { path: '/projects', name: 'Projects', component: Projects },
   { path: '/projectAdd', name: 'Project Add', component: ProjectAdd },
+  { path: '/project', name: 'Project', component: Project },
 ];
 
 export default routes;

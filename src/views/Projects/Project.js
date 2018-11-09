@@ -1,21 +1,35 @@
 import React, { Component } from 'react';
 import { Row, Col, Card, CardBody, CardHeader, Button } from 'reactstrap';
 import moment from 'moment';
+import queryString from 'query-string';
+import FreeLaApi from '../../services/freeLaApi';
 
-class Client extends Component {
+class Project extends Component {
 
   constructor(props) {
     super(props);
+    
+    this.state = {
+      project: {}
+    }
+    const parsedURLParams = queryString.parse(props.location.search);
+    this.id = parsedURLParams.id;
+  }
+
+  async componentDidMount(){
+    const project = await FreeLaApi.projectGet(this.id);
+    if (project.success) {
+      this.setState({ project: project.data });
+    }
   }
 
   render() {
-    const client = this.props.data;
     return (
       <div className="animated fadeIn">
         <Card>
           <CardHeader>
-            <strong className='text-capitalize'><i className="icon-user"></i>&nbsp;{client.name}</strong>
-            <Button type="button" className="pull-right" onClick={() => this.props.handleEdit(client)} size="sm" color="warning"><i className="fa fa-pencil"></i></Button>
+            <strong className='text-capitalize'><i className="icon-user"></i>&nbsp;{this.state.project.name}</strong>
+            <Button type="button" className="pull-right" onClick={() => this.props.handleEdit(this.state.project)} size="sm" color="warning"><i className="fa fa-pencil"></i></Button>
           </CardHeader>
           <CardBody>
             <Row>
@@ -24,27 +38,27 @@ class Client extends Component {
             <br />
             <Row>
               <label className='col-3 text-right'><b>CPF:</b></label>
-              <label className='col-9'>{client.cpf ? client.cpf : '-'}</label>
+              <label className='col-9'>{this.state.project.cpf ? this.state.project.cpf : '-'}</label>
             </Row>
             <Row>
               <label className='col-3 text-right'><b>E-mail:</b></label>
-              <label className='col-9'>{client.email ? client.email : '-'}</label>
+              <label className='col-9'>{this.state.project.email ? this.state.project.email : '-'}</label>
             </Row>
             <Row>
               <label className='col-3 text-right'><b>Telefone 1:</b></label>
-              <label className='col-9'>{client.phone1 ? client.phone1 : '-'}</label>
+              <label className='col-9'>{this.state.project.phone1 ? this.state.project.phone1 : '-'}</label>
             </Row>
             <Row>
               <label className='col-3 text-right'><b>Telefone 2:</b></label>
-              <label className='col-9'>{client.phone2 ? client.phone2 : '-'}</label>
+              <label className='col-9'>{this.state.project.phone2 ? this.state.project.phone2 : '-'}</label>
             </Row>
             <Row>
               <label className='col-3 text-right'><b>Nascimento:</b></label>
-              <label className='col-9'>{client.birthdate ? moment(client.birthdate).format('DD/MM/YYYY') : '-'}</label>
+              <label className='col-9'>{this.state.project.birthdate ? moment(this.state.project.birthdate).format('DD/MM/YYYY') : '-'}</label>
             </Row>
             <Row>
               <label className='col-3 text-right'><b>Criado em:</b></label>
-              <label className='col-9'>{client.createdat ? moment(client.createdat).format('DD/MM/YYYY HH:MM') : '-'}</label>
+              <label className='col-9'>{this.state.project.createdat ? moment(this.state.project.createdat).format('DD/MM/YYYY HH:MM') : '-'}</label>
             </Row>
           </CardBody>
         </Card>
@@ -53,4 +67,4 @@ class Client extends Component {
   }
 }
 
-export default Client;
+export default Project;

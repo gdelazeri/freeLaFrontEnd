@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Card, CardBody, CardHeader, Col, Row, Table, Modal } from 'reactstrap';
 import Auth from '../../helpers/auth';
 import FreeLaApi from '../../services/freeLaApi';
+import moment from 'moment';
 
 class Projects extends Component {
 
@@ -23,14 +24,6 @@ class Projects extends Component {
     this.setState({ projects: projects.data });
   }
 
-  handleEdit(projectId) {
-
-  }
-
-  handleDetails(projectId) {
-    
-  }
-
   render() {
     return (
       <div className="animated fadeIn">
@@ -46,20 +39,18 @@ class Projects extends Component {
                   <thead className="thead-light">
                     <tr>
                       <th>Nome</th>
-                      <th>Cliente</th>
                       <th>Início</th>
+                      <th>Fim</th>
                       <th>Valor</th>
-                      <th width="10%"></th>
                     </tr>
                   </thead>
                   <tbody>
                     {this.state.projects.map(item =>
                       <tr key={item.id.toString()}>
-                        <td><a onClick={() => this.toggleClientDetails(item)}><b>{item.name}</b></a></td>
-                        <td>{item.name}</td>
-                        <td>{item.name}</td>
-                        <td>{item.name}</td>
-                        <td>{item.name}</td>
+                        <td><a href={`/#/project?id=${item.id}`}><b>{item.name}</b></a></td>
+                        <td>{moment(item.startDate).format('DD/MM/YYYY')}</td>
+                        <td>{moment(item.endDate).format('DD/MM/YYYY')}</td>
+                        <td>{item.value}</td>
                       </tr> 
                     )}
                   </tbody>
