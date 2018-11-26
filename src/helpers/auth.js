@@ -1,6 +1,6 @@
 class Auth {
     static checkSession(){
-        const userId = sessionStorage.getItem('userId');
+        const userId = sessionStorage.getItem('userEmail');
         if (userId == null) {
             window.location.href = '/#/login';
         }
@@ -12,10 +12,10 @@ class Auth {
         
     }
 
-    static setSession(user){
-        sessionStorage.setItem('userId', user.id);
+    static setSession(user, type){
         sessionStorage.setItem('userName', user.name);
         sessionStorage.setItem('userEmail', user.email);
+        sessionStorage.setItem('userType', type);
     }
 }
 

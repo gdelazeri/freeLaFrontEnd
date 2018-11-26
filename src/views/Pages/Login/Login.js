@@ -9,6 +9,7 @@ class Login extends Component {
 
     this.state = {
       user: {
+        type: 'P',
         email: undefined,
         password: undefined,
       },
@@ -21,8 +22,8 @@ class Login extends Component {
   async handleSubmit(event) {
     event.preventDefault();
     const user = await FreeLaApi.login(this.state.user);
-    if (user.success && user.data.length === 1) {
-      Auth.setSession(user.data[0]);
+    if (user.success && user.data) {
+      Auth.setSession(user.data);
       window.location.href = '/#/'
     }
     return false;

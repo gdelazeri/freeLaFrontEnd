@@ -22,12 +22,28 @@ class ProjectAdd extends Component {
     super(props);
     this.state = {
       project: {
-        
+        professionalEmail: sessionStorage.getItem('email'),
+        name: undefined,
+        startDate: moment().format('YYYY-MM-DD'),
+        endDate: undefined,
+        presentationDate: undefined,
+        totalValue: undefined,
+        likes: undefined,
+        dislikes: undefined,
+        briefing: undefined,
+        contact: {
+          email: undefined,
+          name: undefined,
+          phone1: undefined,
+          phone2: undefined,
+          cpf: undefined,
+        }
       },
       error: '',
     }
 
     this.handleInput = this.handleInput.bind(this);
+    this.handleInputContact = this.handleInputContact.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -36,6 +52,14 @@ class ProjectAdd extends Component {
       const name = e.target.name;
       const value = e.target ? e.target.value : undefined;
       this.setState({ project: { ...this.state.project, [name]: value } });
+    }
+  }
+
+  handleInputContact(e) {
+    if (e) {
+      const name = e.target.name;
+      const value = e.target ? e.target.value : undefined;
+      this.setState({ project: { ...this.state.project, contact: { ...this.state.project.contact, [name]: value }  } });
     }
   }
 
@@ -107,34 +131,49 @@ class ProjectAdd extends Component {
                 <Row>
                   <Col md="6">
                     <FormGroup>
-                      <Label htmlFor="text-input">Gostos</Label>
+                      <Label htmlFor="text-input">Preferências</Label>
                       <Input type="textarea" rows={4} value={this.state.project.likes} onChange={this.handleInput} name="likes" placeholder="Descreva as características que o cliente deseja expressar em seu projeto, gostos pessoais, imagem que gostaria de passar aos seus clientes..." />
                     </FormGroup>
                   </Col>
                   <Col md="6">
                     <FormGroup>
-                      <Label htmlFor="text-input">Desgostos</Label>
+                      <Label htmlFor="text-input">O que evitar</Label>
                       <Input type="textarea" rows={4} value={this.state.project.dislikes} onChange={this.handleInput} name="dislikes" placeholder="Descreva as características que o cliente NÃO deseja expressar em seu projeto..." />
                     </FormGroup>
                   </Col>
                 </Row>
                 <Row>
+                  <Col xs="12">
+                    <h4>Dados do cliente</h4>
+                  </Col>
                   <Col md="4">
                     <FormGroup>
-                        <Label htmlFor="text-input">Nome do Cliente*</Label>
-                        <Input required value={this.state.project.clientName} onChange={this.handleInput} type="text" name="clientName" placeholder="Digite o nome completo" />
+                        <Label htmlFor="text-input">E-mail*</Label>
+                        <Input required value={this.state.project.contact.email} onChange={this.handleInputContact} type="email" name="email" placeholder="Digite o e-mail do cliente" />
                     </FormGroup>
                   </Col>
                   <Col md="4">
                     <FormGroup>
-                        <Label htmlFor="text-input">E-mail do Cliente*</Label>
-                        <Input required value={this.state.project.clientEmail} onChange={this.handleInput} type="email" name="clientEmail" placeholder="Digite o e-mail do cliente" />
+                        <Label htmlFor="text-input">Nome*</Label>
+                        <Input required value={this.state.project.contact.name} onChange={this.handleInputContact} type="text" name="name" placeholder="Digite o nome completo" />
                     </FormGroup>
                   </Col>
                   <Col md="4">
                     <FormGroup>
-                        <Label htmlFor="text-input">Telefone do Cliente*</Label>
-                        <Input required value={this.state.project.clientPhone} onChange={this.handleInput} type="text" name="clientPhone" placeholder="(XX) XXXXX-XXXX" />
+                        <Label htmlFor="text-input">Telefone*</Label>
+                        <Input required value={this.state.project.contact.phone1} onChange={this.handleInputContact} type="text" name="phone1" placeholder="(XX) XXXXX-XXXX" />
+                    </FormGroup>
+                  </Col>
+                  <Col md="4">
+                    <FormGroup>
+                        <Label htmlFor="text-input">Telefone 2</Label>
+                        <Input required value={this.state.project.contact.phone2} onChange={this.handleInputContact} type="text" name="phone2" placeholder="(XX) XXXXX-XXXX" />
+                    </FormGroup>
+                  </Col>
+                  <Col md="4">
+                    <FormGroup>
+                        <Label htmlFor="text-input">CPF</Label>
+                        <Input required value={this.state.project.contact.cpf} onChange={this.handleInputContact} type="text" name="cpf" placeholder="(XX) XXXXX-XXXX" />
                     </FormGroup>
                   </Col>
                 </Row>

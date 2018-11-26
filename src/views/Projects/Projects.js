@@ -20,7 +20,7 @@ class Projects extends Component {
   }
 
   async getAllProjects(){
-    const projects = await FreeLaApi.projectList(Number(sessionStorage.getItem('userId')));
+    const projects = await FreeLaApi.projectList(sessionStorage.getItem('userEmail'));
     this.setState({ projects: projects.data });
   }
 
