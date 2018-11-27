@@ -149,10 +149,10 @@ class ProjectAddItens extends Component {
                           </FormGroup>
                         </Col>
                       </Row>
+                      <div className='text-right'>
+                        <Button onClick={this.handleSubmit} className='mr-1 btn-sm' color='success'>Salvar item</Button>
+                      </div>
                     </CardBody>
-                    <CardFooter className='text-right'>
-                      <Button onClick={this.handleSubmit} className='mr-1 btn-sm' color='success'>Salvar item</Button>
-                    </CardFooter>
                   </Form>
                 </Card>
               </CardBody>

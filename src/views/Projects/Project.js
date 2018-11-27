@@ -29,6 +29,7 @@ class Project extends Component {
     const project = await FreeLaApi.projectGet(this.id);
     const briefing = await FreeLaApi.projectGetBriefing(this.id);
     const itens = await FreeLaApi.projectGetItens(this.id);
+    console.log(project);
     if (project.success) {
       this.setState({ project: project.data, briefing: briefing.data, itens: itens.data });
     }
@@ -74,12 +75,12 @@ class Project extends Component {
         <Card>
           <CardHeader>
             <strong className='font-18'>{this.state.project.name}</strong>
-            <Button type="button" className="pull-right" onClick={() => this.props.handleEdit(this.state.project)} size="sm" color="warning"><i className="fa fa-pencil"></i></Button>
+            <a className="btn btn-sm btn-warning pull-right" href={`/#/projectEdit?id=${this.state.project.id}`}><i className="fa fa-pencil"></i></a>
           </CardHeader>
           <CardBody>
             <Row>
               <Col md={12} className='mb-2'>
-                <p className='mb-1 font-16'><b>Briefing:</b>&nbsp;
+                <p className='mb-1'><b>Briefing:</b>&nbsp;
                   {this.state.briefing.length > 1 && <a className='font-12' onClick={this.toggleBriefingHistory}>{this.state.briefingHistory ? 'Ocultar histórico' : 'Ver histórico'}</a>}
                 </p>
                 <p className='mb-1'>{this.state.briefing.length > 0 ? this.state.briefing[0].briefing : ''}</p>
@@ -94,31 +95,31 @@ class Project extends Component {
                 </Collapse>
               </Col>
               <Col md={6} className='mb-2'>
-                <p className='mb-1 font-16'><b>Preferências:</b></p>
+                <p className='mb-1'><b>Preferências:</b></p>
                 <p className='mb-1'>{this.state.project.likes ? this.state.project.likes : '-'}</p>
               </Col>
               <Col md={6} className='mb-2'>
-                <p className='mb-1 font-16'><b>O que evitar:</b></p>
+                <p className='mb-1'><b>O que evitar:</b></p>
                 <p className='mb-1'>{this.state.project.dislikes ? this.state.project.dislikes : '-'}</p>
               </Col>
             </Row>
             <br/>
             <Row>
               <Col md={4} className='mb-2'>
-                <p className='mb-1 font-16'><b>Data de início:</b></p>
+                <p className='mb-1'><b>Data de início:</b></p>
                 <p className='mb-1'>{this.state.project.startdate ? moment(this.state.project.startdate).format('DD/MM/YYYY') : '-'}</p>
               </Col>
               <Col md={4} className='mb-2'>
-                <p className='mb-1 font-16'><b>Data de fim:</b></p>
+                <p className='mb-1'><b>Data de fim:</b></p>
                 <p className='mb-1'>{this.state.project.enddate ? moment(this.state.project.enddate).format('DD/MM/YYYY') : '-'}</p>
               </Col>
               <Col md={4} className='mb-2'>
-                <p className='mb-1 font-16'><b>Data da apresentação:</b></p>
+                <p className='mb-1'><b>Data da apresentação:</b></p>
                 <p className='mb-1'>{this.state.project.presentationdate ? moment(this.state.project.presentationdate).format('DD/MM/YYYY') : '-'}</p>
               </Col>
               <Col md={6} className='mb-2'>
-                <p className='mb-1 font-16'><b>Valor Total:</b></p>
-                <p className='mb-1'>R$ {this.state.project.totalvalue ? this.state.project.totalvalue : '-'}</p>
+                <p className='mb-1'><b>Valor Total:</b></p>
+                <p className='mb-1'>{this.state.project.totalvalue ? this.state.project.totalvalue : '-'}</p>
               </Col>
             </Row>
           </CardBody>

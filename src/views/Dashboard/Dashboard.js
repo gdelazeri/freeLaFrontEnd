@@ -19,6 +19,8 @@ import {
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
 import Auth from '../../helpers/auth';
+import moment from 'moment';
+import FreeLaApi from '../../services/freeLaApi'
 Auth.checkSession();
 
 const brandPrimary = getStyle('--primary')
@@ -242,6 +244,19 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     Auth.checkSession();
+
+    this.state = {
+      projects: [],
+    }
+  }
+
+  componentWillMount(){
+    this.getAllProjects();  
+  }
+
+  async getAllProjects(){
+    const projects = await FreeLaApi.projectList(sessionStorage.getItem('userEmail'));
+    this.setState({ projects: projects.data });
   }
 
   render() {
@@ -249,60 +264,23 @@ class Dashboard extends Component {
     return (
       <div className="animated fadeIn">
         <Row>
-          <Col xs="12" sm="6" lg="3">
-            <Card className="text-white bg-info">
-              <CardBody className="pb-0">
-                <div className="text-value">9.823</div>
-                <div>Clientes cadastrados</div>
-              </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Line data={cardChartData2} options={cardChartOpts2} height={70} />
-              </div>
-            </Card>
-          </Col>
-
-          <Col xs="12" sm="6" lg="3">
-            <Card className="text-white bg-primary">
-              <CardBody className="pb-0">
-                <div className="text-value">9.823</div>
-                <div>Projetos em andamento</div>
-              </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Line data={cardChartData1} options={cardChartOpts1} height={70} />
-              </div>
-            </Card>
-          </Col>
-
-          <Col xs="12" sm="6" lg="3">
-            <Card className="text-white bg-warning">
-              <CardBody className="pb-0">
-                <div className="text-value">9.823</div>
-                <div>Projetos concluídos</div>
-              </CardBody>
-              <div className="chart-wrapper" style={{ height: '70px' }}>
-                <Line data={cardChartData3} options={cardChartOpts3} height={70} />
-              </div>
-            </Card>
-          </Col>
-
-          <Col xs="12" sm="6" lg="3">
-            <Card className="text-white bg-danger">
-              <CardBody className="pb-0">
-                <div className="text-value">9.823</div>
-                <div>Itens desenvolvidos</div>
-              </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Bar data={cardChartData4} options={cardChartOpts4} height={70} />
-              </div>
-            </Card>
-          </Col>
+          {this.state.projects.map(project => 
+            <Col xs="12" sm="6" lg="3">
+              <Card className="text-white bg-info">
+                <CardBody className="pb-0">
+                  <div className="text-value">{project.name}</div>
+                  <div><i className='fa fa-calendar'></i>&nbsp;{moment(project.expectedenddate).format('DD/MM/YYYY')}</div>
+                  <br/>
+                </CardBody>
+              </Card>
+            </Col>
+          )}
         </Row>
-        
         <Row>
           <Col>
             <Card>
               <CardHeader>
-                Projetos
+                Próximas entregas
               </CardHeader>
               <CardBody>
                 <Table hover responsive className="table-outline mb-0 d-none d-sm-table">

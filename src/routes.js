@@ -46,12 +46,18 @@ const ProjectAddItem = Loadable({
   loading: Loading,
 });
 
+const ProjectEdit = Loadable({
+  loader: () => import('./views/Projects/ProjectEdit'),
+  loading: Loading,
+});
+
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/clients', exact: true,  name: 'Clients', component: Clients },
   { path: '/projects', name: 'Projects', component: Projects },
   { path: '/projectAdd', name: 'Project Add', component: ProjectAdd },
+  { path: '/projectEdit', name: 'Project Edit', component: ProjectEdit },
   { path: '/project', name: 'Project', component: Project },
   { path: '/projectItem', name: 'Project Item', component: ProjectItem },
   { path: '/projectAddItens', name: 'Project Add Itens', component: ProjectAddItens },

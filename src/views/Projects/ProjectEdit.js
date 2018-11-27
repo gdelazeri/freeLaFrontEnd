@@ -15,6 +15,7 @@ import {
   Alert,
 } from 'reactstrap';
 import FreeLaApi from '../../services/freeLaApi';
+import queryString from 'query-string';
 
 class ProjectAdd extends Component {
 
@@ -31,20 +32,21 @@ class ProjectAdd extends Component {
         likes: undefined,
         dislikes: undefined,
         briefing: undefined,
-        contact: {
-          email: undefined,
-          name: undefined,
-          phone1: undefined,
-          phone2: undefined,
-          cpf: undefined,
-        }
       },
       error: '',
     }
 
+    const parsedURLParams = queryString.parse(props.location.search);
+    this.id = parsedURLParams.id;
     this.handleInput = this.handleInput.bind(this);
-    this.handleInputContact = this.handleInputContact.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  async componentWillMount() {
+    if (this.id) {
+      const project = await FreeLaApi.projectGet(this.id);
+      this.setState({ project: project.data });
+    }
   }
 
   handleInput(e) {
@@ -55,21 +57,13 @@ class ProjectAdd extends Component {
     }
   }
 
-  handleInputContact(e) {
-    if (e) {
-      const name = e.target.name;
-      const value = e.target ? e.target.value : undefined;
-      this.setState({ project: { ...this.state.project, contact: { ...this.state.project.contact, [name]: value }  } });
-    }
-  }
-
   async handleSubmit() {
     const project = this.state.project;
-    const response = await FreeLaApi.projectAdd(project);
+    const response = await FreeLaApi.projectEdit(project);
     if (response.success) {
-      window.location.href = `/#/projectAddItens?id=${response.data.id}`;
+      window.location.href = `/#/project?id=${response.data.id}`;
     } else {
-      this.setState({ error: 'Erro ao salvar o projeto, confira se os campos obrigatórios foram preenchidos e salve novamente' });
+      this.setState({ error: 'Erro ao editar o projeto, confira se os campos obrigatórios foram preenchidos e salve novamente' });
     }
     return false;
   }
@@ -142,41 +136,6 @@ class ProjectAdd extends Component {
                     </FormGroup>
                   </Col>
                 </Row>
-                  <Row>
-                    <Col xs="12">
-                      <h4>Dados do cliente</h4>
-                    </Col>
-                    <Col md="4">
-                      <FormGroup>
-                          <Label htmlFor="text-input">E-mail*</Label>
-                          <Input required value={this.state.project.contact.email} onChange={this.handleInputContact} type="email" name="email" placeholder="Digite o e-mail do cliente" />
-                      </FormGroup>
-                    </Col>
-                    <Col md="4">
-                      <FormGroup>
-                          <Label htmlFor="text-input">Nome*</Label>
-                          <Input required value={this.state.project.contact.name} onChange={this.handleInputContact} type="text" name="name" placeholder="Digite o nome completo" />
-                      </FormGroup>
-                    </Col>
-                    <Col md="4">
-                      <FormGroup>
-                          <Label htmlFor="text-input">Telefone*</Label>
-                          <Input required value={this.state.project.contact.phone1} onChange={this.handleInputContact} type="text" name="phone1" placeholder="(XX) XXXXX-XXXX" />
-                      </FormGroup>
-                    </Col>
-                    <Col md="4">
-                      <FormGroup>
-                          <Label htmlFor="text-input">Telefone 2</Label>
-                          <Input required value={this.state.project.contact.phone2} onChange={this.handleInputContact} type="text" name="phone2" placeholder="(XX) XXXXX-XXXX" />
-                      </FormGroup>
-                    </Col>
-                    <Col md="4">
-                      <FormGroup>
-                          <Label htmlFor="text-input">CPF</Label>
-                          <Input required value={this.state.project.contact.cpf} onChange={this.handleInputContact} type="text" name="cpf" placeholder="(XX) XXXXX-XXXX" />
-                      </FormGroup>
-                    </Col>
-                  </Row>
                 </Form>
               </CardBody>
               <CardFooter className='text-right'>
