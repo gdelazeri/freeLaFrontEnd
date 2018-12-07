@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Card, CardBody, CardHeader, Col, Row, Table, Modal } from 'reactstrap';
+import { Button, Form, Card, CardBody, CardHeader, Col, Row, Table, Modal, ModalHeader, ModalBody, Label, Input, FormGroup } from 'reactstrap';
 import Auth from '../../helpers/auth';
 import FreeLaApi from '../../services/freeLaApi';
-import Client from './Client'
-import ClientForm from './ClientForm'
+import moment from 'moment'
 
 const clientModel = {
   name: undefined,
@@ -22,11 +21,17 @@ class Clients extends Component {
     Auth.checkSession();
 
     this.state = {
-      client: undefined,
+      client: { },
       clients: [],
+      clientProjects: [],
+      modalOpen: false,
+      editClient: false,
     }
 
     this.toggleClientDetails = this.toggleClientDetails.bind(this);
+    this.handleInput = this.handleInput.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
+    this.getClientProjects = this.getClientProjects.bind(this);
   }
 
   componentWillMount(){
@@ -34,61 +39,44 @@ class Clients extends Component {
   }
 
   async getAllClients(){
-    const clients = await FreeLaApi.clientList(Number(sessionStorage.getItem('userId')));
+    const clients = await FreeLaApi.clientList();
     this.setState({ clients: clients.data });
   }
 
-  toggleClientDetails(client) {
-    this.setState({ client });
+  async getClientProjects(){
+    const professionalEmail = sessionStorage.getItem('userEmail');
+    const clientEmail = this.state.client.clientemail;
+    if (clientEmail) {
+      const clients = await FreeLaApi.projectList(professionalEmail, clientEmail);
+      this.setState({ clientProjects: clients.data });
+    } else {
+      this.setState({ clientProjects: [] });
+    }
   }
 
-  // handleClientFormInput(e) {
-  //   const name = e.target.name;
-  //   const value = e.target.value;
-  //   this.setState({ 
-  //     clientForm: {...this.state.clientForm, [name]: value },
-  //   });
-  // }
+  async editClient() {
 
-  // async handleClientFormSubmit(){
-  //   const client = this.state.clientForm;
-  //   if (client) {
-  //     if (client.id) {
-  //       const resp = await FreeLaApi.clientEdit(client);
-  //       if (resp.success) {
-  //         this.setState({ client: resp.data });
-  //         this.getAllClients();
-  //       }
-  //     } else {
-  //       const resp = await FreeLaApi.clientAdd(client);
-  //       if (resp.success) {
-  //         this.setState({ client: resp.data });
-  //         this.getAllClients();
-  //       }
-  //     }
-  //   }
-  // }
+    // this.setState({ client });
+  }
 
-  // handleClientFormReset(){
-  //   this.setState({ 
-  //     clientForm: clientModel,
-  //   });
-  // }
+  toggleEdit(){
+    this.setState({ editClient: !this.state.editClient });
+  }
 
-  // handleEdit(client) {
-  //   this.setState({ 
-  //     clientForm: client,
-  //     client: undefined,
-  //   });
-  // }
+  handleInput(e) {
+    const name = e.target.name;
+    const value = e.target.value;
+    this.setState({ client: { ...this.state.client, [name]: value } });
+  }
+
+  toggleClientDetails(client) {
+    this.setState({ client: client || { }, modalOpen: !this.state.modalOpen });
+  }
 
   render() {
     return (
       <div className="animated fadeIn">
         <Row>
-          <Modal isOpen={this.state.client} toggle={this.toggleClientDetails}>
-            <Client data={this.state.client} />
-          </Modal>
           <Col xl={12}>
             <Card>
               <CardHeader>
@@ -104,9 +92,9 @@ class Clients extends Component {
                   </thead>
                   <tbody>
                     {this.state.clients.map(item =>
-                      <tr key={item.id.toString()}>
-                        <td><a onClick={() => this.toggleClientDetails(item)}><b>{item.name}</b></a></td>
-                        <td>{item.email}</td>
+                      <tr onClick={() => this.toggleClientDetails(item)} key={item.clientemail}>
+                        <td><a className='text-bold'>{item.name}</a></td>
+                        <td>{item.clientemail}</td>
                       </tr> 
                     )}
                   </tbody>
@@ -115,6 +103,81 @@ class Clients extends Component {
             </Card>
           </Col>
         </Row>
+
+        <Modal isOpen={this.state.modalOpen} size="md" toggle={this.toggleClientDetails}>
+          <ModalHeader toggle={this.toggleClientDetails}>
+            {this.state.editClient ? 'Editar cliente' : 'Detalhes do cliente'}
+          </ModalHeader>
+          <ModalBody>
+            <Form method="post" encType="multipart/form-data" className="form-horizontal">
+              <Button onClick={this.toggleEdit} className='btn-sm float-right' color='warning'><i className='fa fa-pencil'></i></Button>
+              <FormGroup row>
+                <Col xs="12">
+                  <Label className='mb-0 text-bold' htmlFor="text-input">Nome</Label>
+                  {!this.state.editClient && <p className='mb-0'>{this.state.client.name}</p>}
+                  {this.state.editClient && <Input value={this.state.client.name} onChange={this.handleInput} type="text" id="text-input" name="name" placeholder="Digite o nome completo" />}
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+                <Col xs="12">
+                  <Label className='mb-0 text-bold' htmlFor="clientemail-input">E-mail</Label>
+                  {!this.state.editClient && <p className='mb-0'>{this.state.client.clientemail}</p>}
+                  {this.state.editClient && <Input value={this.state.client.clientemail} onChange={this.handleInput} type="email" id="email-input" name="clientemail" placeholder="Digite o e-mail" autoComplete="email"/>}
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+                <Col xs="12">
+                  <Label className='mb-0 text-bold' htmlFor="cpf-input">CPF</Label>
+                  {!this.state.editClient && <p className='mb-0'>{this.state.client.cpf}</p>}
+                  {this.state.editClient && <Input value={this.state.client.cpf} onChange={this.handleInput} type="text" maxLength={11} id="cpf-input" name="cpf" placeholder="Informe o CPF (somente números)" />}
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+                <Col xs="12">
+                  <Label className='mb-0 text-bold' htmlFor="birthDate-input">Nascimento</Label>
+                  {!this.state.editClient && <p className='mb-0'>{!this.state.client.birthdate ? '' : moment(this.state.client.birthdate).format('DD-MM-YYYY')}</p>}
+                  {this.state.editClient && <Input value={!this.state.client.birthdate ? '' : moment(this.state.client.birthdate).format('YYYY-MM-DD')} onChange={this.handleInput} type="date" id="birthDate-input" name="birthdate" />}
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+                <Col xs="12">
+                  <Label className='mb-0 text-bold' htmlFor="phone1-input">Telefone 1</Label>
+                  {!this.state.editClient && <p className='mb-0'>{this.state.client.phone1}</p>}
+                  {this.state.editClient && <Input value={this.state.client.phone1} onChange={this.handleInput} type="text" maxLength={12} id="phone1-input" name="phone1" />}
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+                <Col xs="12">
+                  <Label className='mb-0 text-bold' htmlFor="phone2-input">Telefone 2</Label>
+                  {!this.state.editClient && <p className='mb-0'>{this.state.client.phone2}</p>}
+                  {this.state.editClient && <Input value={this.state.client.phone2} onChange={this.handleInput} type="text" maxLength={12} id="phone2-input" name="phone2" />}
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+                <Col xs="12">
+                  <Label className='mb-0 text-bold' htmlFor="photo-input">Foto</Label>
+                  {this.state.editClient && <Input value={this.state.client.photo} onChange={this.handleInput} type="file" id="photo-input" name="photo" />}
+                </Col>
+              </FormGroup>
+            </Form>
+            {!this.editClient &&
+            <Row>
+              <br/>
+              <Col xs="12">
+                <h5>Projetos recentes</h5>
+                <Table>
+                  <tbody>
+                    {this.state.clientProjects.map(item =>
+                      <tr key={item.id}>
+                        <td><a href={`/#/project?id=${item.id}`}>{item.name}</a></td>
+                      </tr> 
+                    )}
+                  </tbody>
+                </Table>
+              </Col>
+            </Row>}
+          </ModalBody>
+        </Modal>
       </div>
     )
   }

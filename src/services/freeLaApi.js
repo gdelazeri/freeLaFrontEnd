@@ -33,9 +33,10 @@ class FreeLaApi {
       })
   }
 
-  static async clientList(professionalId) {
+  static async clientList() {
     return new Promise((resolve, reject) => {
-      axios.get(`${HEROKU_ENDPOINT}/client/list/${professionalId ? professionalId : ''}`)
+      const professionalEmail = sessionStorage.getItem('userEmail');
+      axios.get(`${HEROKU_ENDPOINT}/client/list/${professionalEmail}`)
         .then( (res) => {
           const response = JSON.parse(res.request.response);
           resolve(response);
@@ -87,7 +88,6 @@ class FreeLaApi {
   }
 
   static async projectAdd(project) {
-    console.log(project);
     project.professionalEmail = sessionStorage.getItem('userEmail');
     return new Promise((resolve, reject) => {
       axios.post(`${HEROKU_ENDPOINT}/project/add`, project)
@@ -114,9 +114,14 @@ class FreeLaApi {
       })
   }
 
-  static async projectList(professionalEmail) {
+  static async projectList(professionalEmail, clientEmail) {
     return new Promise((resolve, reject) => {
-      axios.get(`${HEROKU_ENDPOINT}/project/list/${professionalEmail}`)
+      axios.get(`${HEROKU_ENDPOINT}/project/list/`, {
+        params: {
+          professionalEmail,
+          clientEmail,
+        },
+      })
         .then( (res) => {
           const response = JSON.parse(res.request.response);
           resolve(response);
