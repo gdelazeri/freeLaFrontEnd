@@ -213,7 +213,6 @@ class FreeLaApi {
   }
   
   static async login(user) {
-    console.log({user});
     return new Promise((resolve, reject) => {
       axios.post(`${HEROKU_ENDPOINT}/login/`, user)
         .then( (res) => {

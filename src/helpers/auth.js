@@ -15,7 +15,7 @@ class Auth {
     static setSession(user, type){
         sessionStorage.setItem('userName', user.name);
         sessionStorage.setItem('userEmail', user.email);
-        sessionStorage.setItem('userType', type);
+        sessionStorage.setItem('userType', 'P');
     }
 }
 

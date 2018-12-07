@@ -22,7 +22,7 @@ class Login extends Component {
   async handleSubmit(event) {
     event.preventDefault();
     const user = await FreeLaApi.login(this.state.user);
-    if (user.success && user.data) {
+    if (user.success && user.data.email) {
       Auth.setSession(user.data);
       window.location.href = '/#/'
     }

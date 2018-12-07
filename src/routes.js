@@ -51,6 +51,11 @@ const ProjectEdit = Loadable({
   loading: Loading,
 });
 
+const Chat = Loadable({
+  loader: () => import('./views/Projects/chat'),
+  loading: Loading,
+});
+
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
@@ -62,6 +67,7 @@ const routes = [
   { path: '/projectItem', name: 'Project Item', component: ProjectItem },
   { path: '/projectAddItens', name: 'Project Add Itens', component: ProjectAddItens },
   { path: '/projectAddItem', name: 'Project Add Item', component: ProjectAddItem },
+  { path: '/chat', name: 'Chat', component: Chat },
   
 ];
 
