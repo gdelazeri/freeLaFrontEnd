@@ -20,7 +20,7 @@ class Projects extends Component {
   }
 
   async getAllProjects(){
-    const projects = await FreeLaApi.projectList(sessionStorage.getItem('userEmail'));
+    const projects = await FreeLaApi.projectList(sessionStorage.getItem('userEmail').trim());
     this.setState({ projects: projects.data });
   }
 
@@ -48,8 +48,8 @@ class Projects extends Component {
                     {this.state.projects.map(item =>
                       <tr key={item.id.toString()}>
                         <td><a href={`/#/project?id=${item.id}`}><b>{item.name}</b></a></td>
-                        <td>{moment(item.startDate).format('DD/MM/YYYY')}</td>
-                        <td>{moment(item.endDate).format('DD/MM/YYYY')}</td>
+                        <td>{moment(item.startdate).format('DD/MM/YYYY')}</td>
+                        <td>{moment(item.enddate).format('DD/MM/YYYY')}</td>
                         <td>{item.value}</td>
                       </tr> 
                     )}

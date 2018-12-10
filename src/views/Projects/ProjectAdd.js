@@ -22,10 +22,10 @@ class ProjectAdd extends Component {
     super(props);
     this.state = {
       project: {
-        professionalEmail: sessionStorage.getItem('email'),
+        professionalemail: sessionStorage.getItem('email'),
         name: undefined,
-        startdate: moment().format('YYYY-MM-DD'),
-        enddate: undefined,
+        startdate: undefined,
+        expectedenddate: undefined,
         presentationdate: undefined,
         totalvalue: undefined,
         likes: undefined,
@@ -109,8 +109,8 @@ class ProjectAdd extends Component {
                   </Col>
                   <Col md="3">
                     <FormGroup>
-                        <Label htmlFor="text-input">Data de Fim*</Label>
-                        <Input required value={this.state.project.enddate} onChange={this.handleInput} type="date" name="enddate" />
+                        <Label htmlFor="text-input">Data de Fim esperada</Label>
+                        <Input required value={this.state.project.expectedenddate} onChange={this.handleInput} type="date" name="expectedenddate" />
                     </FormGroup>
                   </Col>
                   <Col md="3">

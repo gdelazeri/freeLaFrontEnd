@@ -23,7 +23,7 @@ class ProjectAdd extends Component {
     super(props);
     this.state = {
       project: {
-        professionalEmail: sessionStorage.getItem('email'),
+        professionalemail: sessionStorage.getItem('email'),
         name: undefined,
         startdate: moment().format('YYYY-MM-DD'),
         enddate: undefined,

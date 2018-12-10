@@ -61,7 +61,7 @@ class ProjectAddItens extends Component {
     const item = this.state.item;
     const response = await FreeLaApi.projectItemAdd(item, this.id);
     if (response.success) {
-      this.setState({ item: {} });
+      this.setState({ item: undefined });
     }
     this.getItens();
     return false;

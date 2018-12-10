@@ -44,10 +44,10 @@ class Clients extends Component {
   }
 
   async getClientProjects(){
-    const professionalEmail = sessionStorage.getItem('userEmail');
-    const clientEmail = this.state.client.clientemail;
-    if (clientEmail) {
-      const clients = await FreeLaApi.projectList(professionalEmail, clientEmail);
+    const professionalemail = sessionStorage.getItem('userEmail');
+    const clientemail = this.state.client.clientemail;
+    if (clientemail) {
+      const clients = await FreeLaApi.projectList(professionalemail, clientemail);
       this.setState({ clientProjects: clients.data });
     } else {
       this.setState({ clientProjects: [] });
