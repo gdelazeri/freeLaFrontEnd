@@ -16,6 +16,8 @@ import {
 } from 'reactstrap';
 import FreeLaApi from '../../services/freeLaApi';
 import queryString from 'query-string';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 class ProjectAdd extends Component {
 
@@ -25,7 +27,7 @@ class ProjectAdd extends Component {
       project: {
         professionalemail: sessionStorage.getItem('email'),
         name: undefined,
-        startdate: moment().format('YYYY-MM-DD'),
+        startdate: moment(),
         enddate: undefined,
         presentationdate: undefined,
         totalvalue: undefined,
@@ -39,6 +41,7 @@ class ProjectAdd extends Component {
     const parsedURLParams = queryString.parse(props.location.search);
     this.id = parsedURLParams.id;
     this.handleInput = this.handleInput.bind(this);
+    this.handleDate = this.handleDate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -54,6 +57,12 @@ class ProjectAdd extends Component {
       const name = e.target.name;
       const value = e.target ? e.target.value : undefined;
       this.setState({ project: { ...this.state.project, [name]: value } });
+    }
+  }
+
+  handleDate(e, name) {
+    if (e) {
+      this.setState({ project: { ...this.state.project, [name]: moment(e).format() } });
     }
   }
 
@@ -98,19 +107,25 @@ class ProjectAdd extends Component {
                   <Col md="3">
                     <FormGroup>
                         <Label htmlFor="text-input">Data de Início*</Label>
-                        <Input required value={this.state.project.startdate} onChange={this.handleInput} type="date" name="startdate" />
+                        <DatePicker className='form-control' selected={this.state.project.startdate} onChange={(e) => this.handleDate(e, 'startdate')} />
                     </FormGroup>
                   </Col>
                   <Col md="3">
                     <FormGroup>
-                        <Label htmlFor="text-input">Data de Fim*</Label>
-                        <Input required value={this.state.project.enddate} onChange={this.handleInput} type="date" name="enddate" />
+                        <Label htmlFor="text-input">Data esperada de Fim</Label>
+                        <DatePicker className='form-control' selected={this.state.project.expectedenddate} onChange={(e) => this.handleDate(e, 'expectedenddate')} />
                     </FormGroup>
                   </Col>
                   <Col md="3">
                     <FormGroup>
                         <Label htmlFor="text-input">Data de Apresentação</Label>
-                        <Input required value={this.state.project.presentationdate} onChange={this.handleInput} type="date" name="presentationdate" />
+                        <DatePicker className='form-control' selected={this.state.project.presentationdate} onChange={(e) => this.handleDate(e, 'presentationdate')} />
+                    </FormGroup>
+                  </Col>
+                  <Col md="3">
+                    <FormGroup>
+                        <Label htmlFor="text-input">Data de Fim</Label>
+                        <DatePicker className='form-control' selected={this.state.project.enddate} onChange={(e) => this.handleDate(e, 'enddate')} />
                     </FormGroup>
                   </Col>
                 </Row>

@@ -45,13 +45,20 @@ class Projects extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {this.state.projects.map(item =>
-                      <tr key={item.id.toString()}>
+                    {this.state.projects.map((item) => {
+                      let enddate = 'A definir';
+                      if (item.enddate) {
+                        enddate = <td>{moment(item.enddate).format('DD/MM/YYYY')}</td>;
+                      } else if (item.expectedenddate) {
+                        enddate = <td>{moment(item.expectedenddate).format('DD/MM/YYYY')} <sub>previsão</sub></td>;
+                      }
+                      return <tr key={item.id.toString()}>
                         <td><a href={`/#/project?id=${item.id}`}><b>{item.name}</b></a></td>
                         <td>{moment(item.startdate).format('DD/MM/YYYY')}</td>
-                        <td>{moment(item.enddate).format('DD/MM/YYYY')}</td>
+                        {enddate}
                         <td>{item.value}</td>
                       </tr> 
+                    }
                     )}
                   </tbody>
                 </Table>

@@ -11,12 +11,13 @@ class ProjectItem extends Component {
     
     this.state = {
       item: {
-        id: 1,
-        name: 'Logo',
-        stageid: 1,
+        id: undefined,
+        name: undefined,
+        stageid: undefined,
         dependencies: [1, 2, 3],
-        presentationdate: '2018-11-28 00:00:000',
-        enddate: '2018-11-30 00:00:000',
+        presentationdate: undefined,
+        enddate: undefined,
+        comments: [],
       },
       project: {}
     }
@@ -30,6 +31,21 @@ class ProjectItem extends Component {
       const project = await FreeLaApi.projectGet(item.data.projectid);
       this.setState({ item: item.data, project: project.data });
     }
+  }
+
+  buildComments() {
+    return this.state.item.comments.map((item) => {
+      let comment;
+      console.log({item});
+      if (item.clientemail === sessionStorage.getItem('userEmail') || item.professionalemail.trim() === sessionStorage.getItem('userEmail')) {
+        comment = { me: true, message: item.comment, email: sessionStorage.getItem('userEmail') };
+      } else {
+        comment = { me: false, message: item.comment, email: item.clientemail || item.professionalemail };
+      }
+      return <p className={`mb-0 ${comment.me ? 'text-left' : 'text-right'}`}>
+          <b className={comment.me ? 'text-success' : 'text-danger'}>{comment.me ? 'Eu' : comment.email}:</b>&nbsp;{comment.message}
+        </p>;
+    })
   }
 
   render() {
@@ -58,12 +74,20 @@ class ProjectItem extends Component {
                 <p className='mb-1'>{this.state.item.description}</p>
               </Col>
             </Row>
-            <br/>
+          </CardBody>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <strong className='font-18'>Comentários</strong>
+          </CardHeader>
+          <CardBody>
             <Row>
-              
+              {this.buildComments()}
             </Row>
           </CardBody>
         </Card>
+
         <Modal isOpen={this.state.modalOpen} toggle={this.toggleModalItem}>
           <ModalHeader>Finalizar item</ModalHeader>
           <ModalBody>

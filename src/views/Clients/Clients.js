@@ -43,9 +43,8 @@ class Clients extends Component {
     this.setState({ clients: clients.data });
   }
 
-  async getClientProjects(){
-    const professionalemail = sessionStorage.getItem('userEmail');
-    const clientemail = this.state.client.clientemail;
+  async getClientProjects(clientemail){
+    const professionalemail = sessionStorage.getItem('userEmail').trim();
     if (clientemail) {
       const clients = await FreeLaApi.projectList(professionalemail, clientemail);
       this.setState({ clientProjects: clients.data });
@@ -69,7 +68,11 @@ class Clients extends Component {
     this.setState({ client: { ...this.state.client, [name]: value } });
   }
 
-  toggleClientDetails(client) {
+  async toggleClientDetails(client) {
+    console.log({client})
+    if (client.clientemail) {
+      await this.getClientProjects(client.clientemail.trim());
+    }
     this.setState({ client: client || { }, modalOpen: !this.state.modalOpen });
   }
 
@@ -153,25 +156,22 @@ class Clients extends Component {
                   {this.state.editClient && <Input value={this.state.client.phone2} onChange={this.handleInput} type="text" maxLength={12} id="phone2-input" name="phone2" />}
                 </Col>
               </FormGroup>
-              <FormGroup row>
-                <Col xs="12">
-                  <Label className='mb-0 text-bold' htmlFor="photo-input">Foto</Label>
-                  {this.state.editClient && <Input value={this.state.client.photo} onChange={this.handleInput} type="file" id="photo-input" name="photo" />}
-                </Col>
-              </FormGroup>
             </Form>
-            {!this.editClient &&
+            {!this.state.editClient &&
             <Row>
               <br/>
               <Col xs="12">
                 <h5>Projetos recentes</h5>
                 <Table>
                   <tbody>
-                    {this.state.clientProjects.map(item =>
+                    {this.state.clientProjects.length > 0 && this.state.clientProjects.map(item =>
                       <tr key={item.id}>
                         <td><a href={`/#/project?id=${item.id}`}>{item.name}</a></td>
                       </tr> 
                     )}
+                    {this.state.clientProjects.length === 0 && <tr>
+                        <td className='text-center'>Nenhum projeto ainda</td>
+                      </tr>}
                   </tbody>
                 </Table>
               </Col>

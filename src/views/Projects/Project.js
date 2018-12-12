@@ -29,7 +29,6 @@ class Project extends Component {
     const project = await FreeLaApi.projectGet(this.id);
     const briefing = await FreeLaApi.projectGetBriefing(this.id);
     const itens = await FreeLaApi.projectGetItens(this.id);
-    console.log(project);
     if (project.success) {
       this.setState({ project: project.data, briefing: briefing.data, itens: itens.data });
     }
@@ -80,19 +79,8 @@ class Project extends Component {
           <CardBody>
             <Row>
               <Col md={12} className='mb-2'>
-                <p className='mb-1'><b>Briefing:</b>&nbsp;
-                  {this.state.briefing.length > 1 && <a className='font-12' onClick={this.toggleBriefingHistory}>{this.state.briefingHistory ? 'Ocultar histórico' : 'Ver histórico'}</a>}
-                </p>
-                <p className='mb-1'>{this.state.briefing.length > 0 ? this.state.briefing[0].briefing : ''}</p>
-                <Collapse isOpen={this.state.briefingHistory}>
-                  {this.state.briefing.map((bri, index) => {
-                    if (index > 0) {
-                      return <p className='mb-1'>
-                        <b>{moment(bri.date).format('DD/MM/YYYY HH:MM')}</b> - {bri.briefing}
-                      </p>
-                    }
-                  })}
-                </Collapse>
+                <p className='mb-1'><b>Briefing:</b></p>
+                <p className='mb-1'>{this.state.project.briefing}</p>
               </Col>
               <Col md={6} className='mb-2'>
                 <p className='mb-1'><b>Preferências:</b></p>
@@ -105,17 +93,21 @@ class Project extends Component {
             </Row>
             <br/>
             <Row>
-              <Col md={4} className='mb-2'>
+              <Col md={3} className='mb-2'>
                 <p className='mb-1'><b>Data de início:</b></p>
                 <p className='mb-1'>{this.state.project.startdate ? moment(this.state.project.startdate).format('DD/MM/YYYY') : '-'}</p>
               </Col>
-              <Col md={4} className='mb-2'>
-                <p className='mb-1'><b>Data de fim:</b></p>
-                <p className='mb-1'>{this.state.project.enddate ? moment(this.state.project.enddate).format('DD/MM/YYYY') : '-'}</p>
-              </Col>
-              <Col md={4} className='mb-2'>
+              <Col md={3} className='mb-2'>
                 <p className='mb-1'><b>Data da apresentação:</b></p>
                 <p className='mb-1'>{this.state.project.presentationdate ? moment(this.state.project.presentationdate).format('DD/MM/YYYY') : '-'}</p>
+              </Col>
+              <Col md={3} className='mb-2'>
+                <p className='mb-1'><b>Data esperada de fim:</b></p>
+                <p className='mb-1'>{this.state.project.expectedenddate ? moment(this.state.project.expectedenddate).format('DD/MM/YYYY') : '-'}</p>
+              </Col>
+              <Col md={3} className='mb-2'>
+                <p className='mb-1'><b>Data de fim:</b></p>
+                <p className='mb-1'>{this.state.project.enddate ? moment(this.state.project.enddate).format('DD/MM/YYYY') : '-'}</p>
               </Col>
               <Col md={6} className='mb-2'>
                 <p className='mb-1'><b>Valor Total:</b></p>
