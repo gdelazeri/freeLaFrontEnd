@@ -18,6 +18,13 @@ import {
 import FreeLaApi from '../../services/freeLaApi'
 import queryString from 'query-string';
 
+const newItem = {
+  name: '',
+  value: '',
+  expectedenddate: null,
+  description: '',
+}
+
 class ProjectAddItens extends Component {
 
   constructor(props) {
@@ -61,7 +68,7 @@ class ProjectAddItens extends Component {
     const item = this.state.item;
     const response = await FreeLaApi.projectItemAdd(item, this.id);
     if (response.success) {
-      this.setState({ item: undefined });
+      this.setState({ item: newItem });
     }
     this.getItens();
     return false;
@@ -95,34 +102,8 @@ class ProjectAddItens extends Component {
                 <strong><i className="fa fa-list-alt"></i>&nbsp;Adicione itens ao seu projeto</strong>
               </CardHeader>
               <CardBody>
-                {this.state.itens.map((item, index) => 
-                  <Card key={index}>
-                    <CardHeader onClick={() => this.toggleItem(item.id)}><strong>#{index+1}</strong>&nbsp;&nbsp;{item.name}</CardHeader>
-                    <Collapse isOpen={this.state.itensOpened.includes(item.id)}>
-                      <CardBody>
-                        <a className='btn btn-sm btn-warning pull-right' onClick={() => this.editItem(item)}><i className='fa fa-pencil'/></a>
-                        <Row>
-                          <Col md={6} className='mb-2'>
-                            <p className='mb-1'><b>Valor:</b></p>
-                            <p className='mb-1'>{item.value ? `${item.value}` : '-'}</p>
-                          </Col>
-                          <Col md={6} className='mb-2'>
-                            <p className='mb-1'><b>Data estimada de entrega:</b></p>
-                            <p className='mb-1'>{item.expectedenddate ? moment(item.expectedenddate).format('DD/MM/YYYY') : '-'}</p>
-                          </Col>
-                          <Col md={12} className='mb-2'>
-                            <p className='mb-1'><b>Descrição:</b></p>
-                            <p className='mb-1'>{item.description}</p>
-                          </Col>
-                        </Row>
-                      </CardBody>
-                    </Collapse>
-                  </Card>
-                )}
-                <Card>
                   <Form encType="multipart/form-data" className="form-horizontal" onSubmit={this.handleSubmit}>
                     {this.state.error && <Alert color="danger">{this.state.error}</Alert>}
-                    <CardBody>
                       <Row>
                         <Col md="6">
                           <FormGroup>
@@ -152,9 +133,32 @@ class ProjectAddItens extends Component {
                       <div className='text-right'>
                         <Button onClick={this.handleSubmit} className='mr-1 btn-sm' color='success'>Salvar item</Button>
                       </div>
-                    </CardBody>
                   </Form>
-                </Card>
+                  <br />
+                {this.state.itens.map((item, index) => 
+                  <Card key={index}>
+                    <CardHeader onClick={() => this.toggleItem(item.id)}><strong>#{index+1}</strong>&nbsp;&nbsp;{item.name}</CardHeader>
+                    <Collapse isOpen={this.state.itensOpened.includes(item.id)}>
+                      <CardBody>
+                        <a className='btn btn-sm btn-warning pull-right' onClick={() => this.editItem(item)}><i className='fa fa-pencil'/></a>
+                        <Row>
+                          <Col md={6} className='mb-2'>
+                            <p className='mb-1'><b>Valor:</b></p>
+                            <p className='mb-1'>{item.value ? `${item.value}` : '-'}</p>
+                          </Col>
+                          <Col md={6} className='mb-2'>
+                            <p className='mb-1'><b>Data estimada de entrega:</b></p>
+                            <p className='mb-1'>{item.expectedenddate ? moment(item.expectedenddate).format('DD/MM/YYYY') : '-'}</p>
+                          </Col>
+                          <Col md={12} className='mb-2'>
+                            <p className='mb-1'><b>Descrição:</b></p>
+                            <p className='mb-1'>{item.description}</p>
+                          </Col>
+                        </Row>
+                      </CardBody>
+                    </Collapse>
+                  </Card>
+                )}
               </CardBody>
               <CardFooter className='text-right'>
                 <Button onClick={this.next} className='mr-1' color='success'>Avançar</Button>

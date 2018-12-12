@@ -189,6 +189,21 @@ class FreeLaApi {
       })
   }
 
+  static async listNextItens(professionalemail) {
+    return new Promise((resolve, reject) => {
+      axios.get(`${HEROKU_ENDPOINT}/project/listNextItens/${professionalemail}`)
+        .then( (res) => {
+          const response = JSON.parse(res.request.response);
+          resolve(response);
+        }).catch((error) => {
+          const response = JSON.parse(error.request.response);
+          reject(response);
+        })
+      })
+  }
+
+  
+
   static async projectItemAdd(item, projectId) {
     item.projectId = projectId;
     return new Promise((resolve, reject) => {
