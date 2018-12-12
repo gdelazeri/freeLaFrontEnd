@@ -11,6 +11,7 @@ class Register extends Component {
       email: undefined,
       password: undefined,
       confirmPassword: undefined,
+      phone1: undefined,
     }
 
     this.createAccount = this.createAccount.bind(this);
@@ -18,15 +19,16 @@ class Register extends Component {
   }
 
   async createAccount(){
-    const { name, email, password, confirmPassword } = this.state;
+    const { name, email, password, confirmPassword, phone1 } = this.state;
     let obs = [];
     if (!name) obs.push('Enter your name');
     if (!email) obs.push('Enter your e-mail');
     if (!password) obs.push('Enter your password');
+    if (!phone1) obs.push('Enter your phone number');
 
     if (obs.length === 0) {
       if (password === confirmPassword) {
-        const professional = { name, email, password, confirmPassword };
+        const professional = { name, email, password, confirmPassword, phone1 };
         const resp = await FreeLaApi.professionalAdd(professional);
         if (resp.success) {
           window.location.href = '/#/';
@@ -80,13 +82,21 @@ class Register extends Component {
                       </InputGroupAddon>
                       <Input type="password" placeholder="Password" autoComplete="new-password" name="password" onChange={this.handleInput} />
                     </InputGroup>
-                    <InputGroup className="mb-4">
+                    <InputGroup className="mb-3">
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
                           <i className="icon-lock"></i>
                         </InputGroupText>
                       </InputGroupAddon>
                       <Input type="password" placeholder="Repeat password" autoComplete="new-password" name="confirmPassword" onChange={this.handleInput} />
+                    </InputGroup>
+                    <InputGroup className="mb-4">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="icon-phone"></i>
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input type="text" placeholder="Your phone number" autoComplete="phone" name="phone1" onChange={this.handleInput} />
                     </InputGroup>
                     <Button color="success" block onClick={this.createAccount}>Create Account</Button>
                   </Form>

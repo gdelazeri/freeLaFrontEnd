@@ -36,7 +36,6 @@ class ProjectItem extends Component {
   buildComments() {
     return this.state.item.comments.map((item) => {
       let comment;
-      console.log({item});
       if (item.clientemail === sessionStorage.getItem('userEmail') || item.professionalemail.trim() === sessionStorage.getItem('userEmail')) {
         comment = { me: true, message: item.comment, email: sessionStorage.getItem('userEmail') };
       } else {
