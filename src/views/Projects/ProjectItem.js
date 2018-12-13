@@ -23,6 +23,8 @@ class ProjectItem extends Component {
     }
     const parsedURLParams = queryString.parse(props.location.search);
     this.id = parsedURLParams.id;
+    this.addComment = this.addComment.bind(this);
+    this.handleInput = this.handleInput.bind(this);
   }
 
   async componentWillMount(){
@@ -34,17 +36,44 @@ class ProjectItem extends Component {
   }
 
   buildComments() {
+    if (this.state.item.comments.length === 0) {
+      return <p className='text-center'>Nenhum comentário realizado</p>;
+    }
     return this.state.item.comments.map((item) => {
       let comment;
-      if (item.clientemail === sessionStorage.getItem('userEmail') || item.professionalemail.trim() === sessionStorage.getItem('userEmail')) {
+      if (item.professionalemail.trim() === sessionStorage.getItem('userEmail').trim()) {
         comment = { me: true, message: item.comment, email: sessionStorage.getItem('userEmail') };
       } else {
-        comment = { me: false, message: item.comment, email: item.clientemail || item.professionalemail };
+        comment = { me: false, message: item.comment, email: item.clientemail };
       }
       return <p className={`mb-0 ${comment.me ? 'text-left' : 'text-right'}`}>
           <b className={comment.me ? 'text-success' : 'text-danger'}>{comment.me ? 'Eu' : comment.email}:</b>&nbsp;{comment.message}
         </p>;
     })
+  }
+
+  async addComment() {
+    const comment = this.state.comment;
+    const obj = {
+      clientemail: undefined,
+      comment,
+      itemId: this.id,
+      professionalemail: sessionStorage.getItem('userEmail'),
+    }
+    
+    this.setState({ item: {
+        ...this.state.item,
+        comments: this.state.item.comments.concat(obj),
+      },
+      comment: '',
+    });
+    await FreeLaApi.projectItemComment(obj);
+  }
+
+  handleInput(e) {
+    const name = e.target.name;
+    const value = e.target.value;
+    this.setState({ [name]: value });
   }
 
   render() {
@@ -82,7 +111,18 @@ class ProjectItem extends Component {
           </CardHeader>
           <CardBody>
             <Row>
-              {this.buildComments()}
+              <Col xs={12}>
+                {this.buildComments()}
+              </Col>
+            </Row>
+            <br/>
+            <Row>
+              <Col xs={8} sm={10}>
+                <input type="text" name="comment" className='form-control' placeholder='Escreva aqui seu comentário...' value={this.state.comment} onChange={this.handleInput} />
+              </Col>
+              <Col xs={4} sm={2}>
+                <Button onClick={this.addComment} className='btn btn-success btn-block'>Enviar</Button>
+              </Col>
             </Row>
           </CardBody>
         </Card>
