@@ -53,14 +53,14 @@ class Login extends Component {
                   <CardBody>
                     <Form onSubmit={this.handleSubmit}>
                       <h1>Login</h1>
-                      <p className="text-muted">Sign In to your account</p>
+                      <p className="text-muted">Acesse sua conta</p>
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="email" name="email" placeholder="Enter your e-mail" autoComplete="email" value={this.state.user.email} onChange={this.handleInput} />
+                        <Input type="email" name="email" placeholder="Insira seu email" autoComplete="email" value={this.state.user.email} onChange={this.handleInput} />
                       </InputGroup>
                       <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">
@@ -68,14 +68,14 @@ class Login extends Component {
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="password" name="password" placeholder="Enter your password" autoComplete="current-password" value={this.state.user.password} onChange={this.handleInput} />
+                        <Input type="password" name="password" placeholder="Insira sua senha" autoComplete="current-password" value={this.state.user.password} onChange={this.handleInput} />
                       </InputGroup>
                       <Row>
                         <Col xs="6">
                           <Button color="primary" className="px-4">Login</Button>
                         </Col>
                         <Col xs="6" className="text-right">
-                          <Button color="link" className="px-0">Forgot password?</Button>
+                          <Button color="link" className="px-0">Esqueceu sua senha?</Button>
                         </Col>
                       </Row>
                     </Form>
