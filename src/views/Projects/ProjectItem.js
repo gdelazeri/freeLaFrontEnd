@@ -102,13 +102,13 @@ class ProjectItem extends Component {
     }
     return this.state.item.comments.map((item) => {
       let comment;
-      if (item.professionalemail.trim() === sessionStorage.getItem('userEmail').trim()) {
+      if (item.professionalemail && item.professionalemail.trim() === sessionStorage.getItem('userEmail').trim()) {
         comment = { me: true, message: item.comment, email: sessionStorage.getItem('userEmail') };
       } else {
         comment = { me: false, message: item.comment, email: item.clientemail };
       }
-      return <p className={`mb-0 ${comment.me ? 'text-left' : 'text-right'}`}>
-          <b className={comment.me ? 'text-success' : 'text-danger'}>{comment.me ? 'Eu' : comment.email}:</b>&nbsp;{comment.message}
+      return <p className='mb-0 text-left'>
+          <b className={comment.me ? 'text-success' : 'text-danger'}>{comment.me ? 'Eu' : comment.email.trim()}:</b>&nbsp;{comment.message}
         </p>;
     })
   }

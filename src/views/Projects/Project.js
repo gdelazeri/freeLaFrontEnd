@@ -3,6 +3,7 @@ import { Row, Col, Table, Card, CardBody, CardHeader, Button, Modal, ModalHeader
 import moment from 'moment';
 import queryString from 'query-string';
 import FreeLaApi from '../../services/freeLaApi';
+import {Link} from 'react-router-dom'
 
 class Project extends Component {
 
@@ -164,7 +165,7 @@ class Project extends Component {
         <Card>
           <CardHeader>
             <strong className=''>Itens do projeto</strong>
-            <Button type="button" className="pull-right" onClick={this.toggleModalAddItem} size="sm" color="success"><i className="fa fa-plus"></i></Button>
+            {/* <Link to={`/projectAddItem?projectId=${this.id}`}><Button type="button" className="pull-right" size="sm" color="success"><i className="fa fa-plus"></i></Button></Link> */}
           </CardHeader>
           <CardBody>
             <p>Refine sua busca:</p>

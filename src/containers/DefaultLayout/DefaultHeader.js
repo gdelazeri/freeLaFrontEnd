@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
-import logo from '../../assets/img/brand/logo.svg'
-import sygnet from '../../assets/img/brand/sygnet.svg'
+import { AppAsideToggler, AppHeaderDropdown, AppSidebarToggler } from '@coreui/react';
 
 const propTypes = {
   children: PropTypes.node,
@@ -12,12 +10,17 @@ const propTypes = {
 
 const defaultProps = {};
 
+
 class DefaultHeader extends Component {
+  logout() {
+    sessionStorage.clear();
+  }
+
   render() {
 
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
-
+    
     return (
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
@@ -36,7 +39,7 @@ class DefaultHeader extends Component {
               <DropdownItem><i className="fa fa-user"></i> Profile</DropdownItem>
               <DropdownItem><i className="fa fa-wrench"></i> Settings</DropdownItem>
               <DropdownItem divider />
-              <DropdownItem><i className="fa fa-lock"></i> Logout</DropdownItem>
+              <DropdownItem onClick={this.logout}><i className="fa fa-lock"></i> Logout</DropdownItem>
             </DropdownMenu>
           </AppHeaderDropdown>
         </Nav>
