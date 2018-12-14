@@ -57,8 +57,8 @@ class Register extends Component {
               <Card className="mx-4">
                 <CardBody className="p-4">
                   <Form>
-                    <h1>Hi freela, register here!</h1>
-                    <p className="text-muted">Enter your personal data and create your account</p>
+                    <h1>Oi freela, registre-se aqui!</h1>
+                    <p className="text-muted">Preencha com seus dados e cria sua conta</p>
                     {this.state.obs.map(o => <Alert color="danger">{o}</Alert>)}
                     <InputGroup className="mb-3">
                       <InputGroupAddon addonType="prepend">
@@ -66,13 +66,13 @@ class Register extends Component {
                           <i className="icon-user"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="text" placeholder="Your name" autoComplete="name" name="name" onChange={this.handleInput} />
+                      <Input type="text" placeholder="Insira seu nome" autoComplete="name" name="name" onChange={this.handleInput} />
                     </InputGroup>
                     <InputGroup className="mb-3">
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>@</InputGroupText>
                       </InputGroupAddon>
-                      <Input type="text" placeholder="Email" autoComplete="email" name="email" onChange={this.handleInput} />
+                      <Input type="text" placeholder=" Insira seu email" autoComplete="email" name="email" onChange={this.handleInput} />
                     </InputGroup>
                     <InputGroup className="mb-3">
                       <InputGroupAddon addonType="prepend">
@@ -80,7 +80,7 @@ class Register extends Component {
                           <i className="icon-lock"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="password" placeholder="Password" autoComplete="new-password" name="password" onChange={this.handleInput} />
+                      <Input type="password" placeholder="Insira seu senha" autoComplete="new-password" name="password" onChange={this.handleInput} />
                     </InputGroup>
                     <InputGroup className="mb-3">
                       <InputGroupAddon addonType="prepend">
@@ -88,7 +88,7 @@ class Register extends Component {
                           <i className="icon-lock"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="password" placeholder="Repeat password" autoComplete="new-password" name="confirmPassword" onChange={this.handleInput} />
+                      <Input type="password" placeholder="Insira sua senha novamente" autoComplete="new-password" name="confirmPassword" onChange={this.handleInput} />
                     </InputGroup>
                     <InputGroup className="mb-4">
                       <InputGroupAddon addonType="prepend">
@@ -96,9 +96,9 @@ class Register extends Component {
                           <i className="icon-phone"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="text" placeholder="Your phone number" autoComplete="phone" name="phone1" onChange={this.handleInput} />
+                      <Input type="text" placeholder="Insira seu telefone" autoComplete="phone" name="phone1" onChange={this.handleInput} />
                     </InputGroup>
-                    <Button color="success" block onClick={this.createAccount}>Create Account</Button>
+                    <Button color="success" block onClick={this.createAccount}>Criar Conta</Button>
                   </Form>
                 </CardBody>
                 <CardFooter className="p-4">

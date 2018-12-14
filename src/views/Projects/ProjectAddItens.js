@@ -120,7 +120,7 @@ class ProjectAddItens extends Component {
                         <Col md="3">
                           <FormGroup>
                             <Label htmlFor="text-input">Data estimada de fim</Label>
-                            <Input required value={this.state.item.expectedEndDate ? this.state.item.expectedEndDate : undefined} onChange={this.handleInput} type="date" name="expectedEndDate" />
+                            <Input required value={this.state.item.expectedenddate ? this.state.item.expectedenddate : undefined} onChange={this.handleInput} type="date" name="expectedenddate" />
                           </FormGroup>
                         </Col>
                         <Col md="12">

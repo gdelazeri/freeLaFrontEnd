@@ -201,7 +201,18 @@ class FreeLaApi {
       })
   }
 
-  
+  static async projectItemComment(comment) {
+    return new Promise((resolve, reject) => {
+      axios.post(`${HEROKU_ENDPOINT}/project/addItemComment`, comment)
+        .then( (res) => {
+          const response = JSON.parse(res.request.response);
+          resolve(response);
+        }).catch((error) => {
+          const response = JSON.parse(error.request.response);
+          reject(response);
+        })
+      })
+  }  
 
   static async projectItemAdd(item, projectId) {
     item.projectId = projectId;

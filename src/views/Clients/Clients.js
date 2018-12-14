@@ -21,10 +21,13 @@ class Clients extends Component {
     this.state = {
       client: { },
       clients: [],
+      clientsFiltered: [],
       clientProjects: [],
       modalOpen: false,
       modalAdd: false,
       editClient: false,
+      filterEmail: "",
+      filterName: "",
     }
 
     this.toggleClientDetails = this.toggleClientDetails.bind(this);
@@ -33,7 +36,13 @@ class Clients extends Component {
     this.handleInput = this.handleInput.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
     this.getClientProjects = this.getClientProjects.bind(this);
+<<<<<<< HEAD
     this.editClient = this.editClient.bind(this);
+=======
+    this.search = this.search.bind(this);
+    this.removeFilter = this.removeFilter.bind(this);
+    this.handleInputFilter = this.handleInputFilter.bind(this);
+>>>>>>> eee9af839817b86332abc9bb48ede05d7984f287
   }
 
   componentWillMount(){
@@ -42,7 +51,7 @@ class Clients extends Component {
 
   async getAllClients(){
     const clients = await FreeLaApi.clientList();
-    this.setState({ clients: clients.data });
+    this.setState({ clients: clients.data, clientsFiltered: clients.data });
   }
 
   async getClientProjects(clientemail){
@@ -83,6 +92,33 @@ class Clients extends Component {
     }
     this.setState({ client: client || { }, modalOpen: !this.state.modalOpen });
   }
+  
+  handleInputFilter(e, name) {
+    this.setState({ [name]: e.target.value });
+  }
+
+  search(){
+    console.log(this.state)
+    const clientsFiltered = this.state.clients.filter(c => {
+      let returnable = true;
+      if (this.state.filterName !== "")
+        returnable = c['name'].trim() === this.state.filterName;
+      
+      if (this.state.filterEmail !== "" && returnable)
+        returnable = c['clientemail'].trim() === this.state.filterEmail;
+
+      if (returnable)
+        return c;
+    });
+    this.setState({ clientsFiltered });
+  }
+
+  removeFilter(){
+    this.setState({ clientsFiltered: this.state.clients,
+                    filterEmail: "",
+                    filterName: "",
+    });
+  }
 
   toggleClientAdd() {
     this.setState({ modalAdd: !this.state.modalAdd });
@@ -99,6 +135,31 @@ class Clients extends Component {
                 <Button className='btn btn-sm btn-success pull-right' onClick={this.toggleClientAdd}><i className="fa fa-plus"></i></Button>
               </CardHeader>
               <CardBody>
+                <p>Refine sua busca:</p>
+                <Row>
+                  <Col md={2}>
+                    <strong>Nome</strong>
+                  </Col>
+                  <Col md={2}>
+                    <strong>Email</strong>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={2}>
+                    <input className='form-control' type='text' value={this.state.filterName} onChange={(e) => this.handleInputFilter(e, 'filterName')} />
+                  </Col>
+                  <Col md={2}>
+                    <input className='form-control' type='text' value={this.state.filterEmail} onChange={(e) => this.handleInputFilter(e, 'filterEmail')} />
+                  </Col>
+                </Row>
+                <Row style={{paddingTop: '10px', paddingBottom: '15px'}}>
+                  <Col md={2}>
+                    <button className="btn btn-sm btn btn-warning" onClick={this.removeFilter}><i className="fa fa-eraser"></i> Remover Filtros</button>
+                  </Col>
+                  <Col md={2}>
+                    <button className="btn pull-right btn-sm btn btn-info" onClick={this.search}><i className="fa fa-search"></i> Buscar</button>
+                  </Col>
+                </Row> 
                 <Table hover responsive className="table-outline mb-0 d-sm-table">
                   <thead className="thead-light">
                     <tr>
@@ -107,7 +168,7 @@ class Clients extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {this.state.clients.map(item =>
+                    {this.state.clientsFiltered.map(item =>
                       <tr onClick={() => this.toggleClientDetails(item)} key={item.clientemail}>
                         <td><a className='text-bold'>{item.name}</a></td>
                         <td>{item.clientemail}</td>
