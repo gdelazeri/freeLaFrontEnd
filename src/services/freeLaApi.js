@@ -7,7 +7,6 @@ class FreeLaApi {
   }
 
   static async clientAdd(client) {
-    client.password = "*";
     return new Promise((resolve, reject) => {
       axios.post(`${HEROKU_ENDPOINT}/client/add`, client)
         .then( (res) => {
