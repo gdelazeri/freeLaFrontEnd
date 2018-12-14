@@ -95,7 +95,6 @@ class Clients extends Component {
   }
 
   search(){
-    console.log(this.state)
     const clientsFiltered = this.state.clients.filter(c => {
       let returnable = true;
       if (this.state.filterName !== "")
