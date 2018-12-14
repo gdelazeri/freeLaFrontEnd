@@ -36,13 +36,10 @@ class Clients extends Component {
     this.handleInput = this.handleInput.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
     this.getClientProjects = this.getClientProjects.bind(this);
-<<<<<<< HEAD
     this.editClient = this.editClient.bind(this);
-=======
     this.search = this.search.bind(this);
     this.removeFilter = this.removeFilter.bind(this);
     this.handleInputFilter = this.handleInputFilter.bind(this);
->>>>>>> eee9af839817b86332abc9bb48ede05d7984f287
   }
 
   componentWillMount(){

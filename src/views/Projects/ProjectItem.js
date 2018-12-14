@@ -3,6 +3,9 @@ import { Row, Col, Table, Card, CardBody, CardHeader, Button, Modal, ModalHeader
 import moment from 'moment';
 import queryString from 'query-string';
 import FreeLaApi from '../../services/freeLaApi';
+import axios from 'axios';
+import Gallery from 'react-grid-gallery';
+import { HEROKU_ENDPOINT } from '../../services/endpoints.json';
 
 class ProjectItem extends Component {
 
@@ -18,9 +21,15 @@ class ProjectItem extends Component {
         presentationdate: undefined,
         enddate: undefined,
         comments: [],
+        files: [],
       },
-      project: {}
+      project: {},
+      file: null
     }
+    
+    this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
+    
     const parsedURLParams = queryString.parse(props.location.search);
     this.id = parsedURLParams.id;
     this.addComment = this.addComment.bind(this);
@@ -33,23 +42,6 @@ class ProjectItem extends Component {
       const project = await FreeLaApi.projectGet(item.data.projectid);
       this.setState({ item: item.data, project: project.data });
     }
-  }
-
-  buildComments() {
-    if (this.state.item.comments.length === 0) {
-      return <p className='text-center'>Nenhum comentário realizado</p>;
-    }
-    return this.state.item.comments.map((item) => {
-      let comment;
-      if (item.professionalemail.trim() === sessionStorage.getItem('userEmail').trim()) {
-        comment = { me: true, message: item.comment, email: sessionStorage.getItem('userEmail') };
-      } else {
-        comment = { me: false, message: item.comment, email: item.clientemail };
-      }
-      return <p className={`mb-0 ${comment.me ? 'text-left' : 'text-right'}`}>
-          <b className={comment.me ? 'text-success' : 'text-danger'}>{comment.me ? 'Eu' : comment.email}:</b>&nbsp;{comment.message}
-        </p>;
-    })
   }
 
   async addComment() {
@@ -74,6 +66,62 @@ class ProjectItem extends Component {
     const name = e.target.name;
     const value = e.target.value;
     this.setState({ [name]: value });
+  }
+
+  onFormSubmit(e){
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('photo', this.state.file);
+    const config = {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+    };
+    axios.put(`http://localhost:3001/project/itemFile/${this.id}`, formData, config)
+      .then((response) => {
+        console.log({response});
+        this.setState({ 
+          item: {
+            ...this.state.item,
+            files: this.state.item.files.concat({file: response.data.filename}),
+          },
+          file: null,
+        })
+      }).catch((error) => {
+        console.log(error);
+      });
+  }
+
+  onChange(e) {
+    this.setState({file:e.target.files[0]});
+  }
+
+  buildComments() {
+    if (this.state.item.comments.length === 0) {
+      return <p className='text-center'>Nenhum comentário realizado</p>;
+    }
+    return this.state.item.comments.map((item) => {
+      let comment;
+      if (item.professionalemail.trim() === sessionStorage.getItem('userEmail').trim()) {
+        comment = { me: true, message: item.comment, email: sessionStorage.getItem('userEmail') };
+      } else {
+        comment = { me: false, message: item.comment, email: item.clientemail };
+      }
+      return <p className={`mb-0 ${comment.me ? 'text-left' : 'text-right'}`}>
+          <b className={comment.me ? 'text-success' : 'text-danger'}>{comment.me ? 'Eu' : comment.email}:</b>&nbsp;{comment.message}
+        </p>;
+    })
+  }
+
+  buildGallery() {
+    const images = this.state.item.files.map(photo => { 
+      console.log(photo);
+      return { 
+        src: `${HEROKU_ENDPOINT}/uploads/${photo.file}`,
+        thumbnail: `${HEROKU_ENDPOINT}/uploads/${photo.file}`,
+      } 
+    });
+    return <Gallery images={images} />;
   }
 
   render() {
@@ -105,6 +153,24 @@ class ProjectItem extends Component {
           </CardBody>
         </Card>
 
+        <Card>
+          <CardHeader>
+            <strong className='font-18'>Arquivos</strong>
+          </CardHeader>
+          <CardBody>
+            <Col xs={12}>
+              {console.log()}
+              <form className='text-right' onSubmit={this.onFormSubmit}>
+                <input type="file" name="photo" id="upload-photo" onChange={this.onChange} style={{display:'none'}} />
+                {this.state.file && <label className='mr-2 mb-0'><i className='fa fa-file-image-o'></i>&nbsp;{this.state.file.name}</label>}
+                <label className='btn btn-sm btn-warning mr-2 mb-0' for="upload-photo"><i className='fa fa-search'></i>&nbsp;Pesquisar</label>
+                <button className='btn btn-sm btn-success' type="submit"><i className='fa fa-cloud-upload'></i>&nbsp;Upload</button>
+              </form>
+            </Col>
+            {this.buildGallery()}
+          </CardBody>
+        </Card>
+        
         <Card>
           <CardHeader>
             <strong className='font-18'>Comentários</strong>
