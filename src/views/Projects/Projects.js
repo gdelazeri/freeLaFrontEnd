@@ -100,7 +100,7 @@ class Projects extends Component {
                     <strong>Data início</strong>
                   </Col>
                   <Col md={4}>
-                    <strong>Data fim</strong>
+                    <strong>Data fim (previsão)</strong>
                   </Col>
                 </Row>
                 <Row>
@@ -111,16 +111,16 @@ class Projects extends Component {
                     <input className='form-control' type='text' value={this.state.filterClient} onChange={(e) => this.handleInput(e, 'filterClient')} />
                   </Col>
                   <Col md={2}>
-                    <input className='form-control' type='date' value={this.state.filterDateBegin} onChange={(e) => this.handleInput(e, 'filterDateBeginStart')} /> 
+                    <input className='form-control' type='date' value={this.state.filterDateBeginStart} onChange={(e) => this.handleInput(e, 'filterDateBeginStart')} /> 
                   </Col>
                   <Col md={2}>
-                    <input className='form-control' type='date' value={this.state.filterDateEnd} onChange={(e) => this.handleInput(e, 'filterDateEndStart')} />
+                    <input className='form-control' type='date' value={this.state.filterDateEndStart} onChange={(e) => this.handleInput(e, 'filterDateEndStart')} />
                   </Col>
                   <Col md={2}>
-                    <input className='form-control' type='date' value={this.state.filterDateBegin} onChange={(e) => this.handleInput(e, 'filterDateBeginExpected')} />
+                    <input className='form-control' type='date' value={this.state.filterDateBeginExpected} onChange={(e) => this.handleInput(e, 'filterDateBeginExpected')} />
                   </Col>
                   <Col md={2}>
-                    <input className='form-control' type='date' value={this.state.filterDateEnd} onChange={(e) => this.handleInput(e, 'filterDateEndExpected')} />
+                    <input className='form-control' type='date' value={this.state.filterDateEndExpected} onChange={(e) => this.handleInput(e, 'filterDateEndExpected')} />
                   </Col>
                 </Row>
                 <Row style={{paddingTop: '10px', paddingBottom: '15px'}}>
