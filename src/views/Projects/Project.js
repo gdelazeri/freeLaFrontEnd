@@ -30,6 +30,7 @@ class Project extends Component {
     this.search = this.search.bind(this);
     this.removeFilter = this.removeFilter.bind(this);
     this.handleInputFilter = this.handleInputFilter.bind(this);
+    this.toggleVisible = this.toggleVisible.bind(this);
   }
 
   async componentWillMount(){
@@ -105,6 +106,13 @@ class Project extends Component {
     });
   }
 
+  toggleVisible(itemId) {
+    const itemIndex = this.state.itens.findIndex(item => item.id === itemId);
+    const itens = this.state.itens;
+    itens[itemIndex].visibility = !itens[itemIndex].visibility;
+    this.setState({ itens });
+  }
+
   render() {
     return (
       <div className="animated fadeIn">
@@ -167,10 +175,10 @@ class Project extends Component {
               <Col md={4}>
                 <strong>Data fim (Prevista)</strong>
               </Col>
-              <Col md={2}>
+              <Col md={3}>
                 <strong>Visibilidade</strong>
               </Col>
-              <Col md={2}>
+              <Col md={3}>
                 <strong>Status</strong>
               </Col>
             </Row>
@@ -184,14 +192,14 @@ class Project extends Component {
               <Col md={2}>
                 <input className='form-control' type='date' value={this.state.filterDateEndExpected} onChange={(e) => this.handleInputFilter(e, 'filterDateEndExpected')} />
               </Col>
-              <Col md={2}>
+              <Col md={3}>
                 <select className='form-control'>
                   <option disabled selected value> -- Selecione visibilidade -- </option>
                   <option value='name'>Visível</option>
-                  <option value='clientemail'>Não-visível</option>
+                  <option value='clientemail'>Oculto</option>
                 </select>
               </Col>
-              <Col md={2}>
+              <Col md={3}>
                 <select className='form-control'>
                   <option disabled selected value> -- Selecione status -- </option>
                   <option value='name'>Aprovado</option>
@@ -201,10 +209,8 @@ class Project extends Component {
               </Col>
             </Row>
             <Row style={{paddingTop: '10px', paddingBottom: '15px'}}>
-              <Col md={9}>
+              <Col md={12}>
                 <button className="btn btn-sm btn btn-warning" onClick={this.removeFilter}><i className="fa fa-eraser"></i> Remover Filtros</button>
-              </Col>
-              <Col md={1}>
                 <button className="btn pull-right btn-sm btn btn-info" onClick={this.search}><i className="fa fa-search"></i> Buscar</button>
               </Col>
             </Row> 
@@ -212,10 +218,9 @@ class Project extends Component {
               <thead className="thead-light">
                 <tr>
                   <th>Nome</th>
-                  <th width="15%">Etapa</th>
-                  <th width="15%">Fim</th>
-                  <th width="15%">Visibilidade</th>
-                  <th width="15%">Status</th>
+                  <th className='text-center' width="15%">Fim</th>
+                  <th className='text-center' width="15%">Visibilidade</th>
+                  <th className='text-center' width="15%">Status</th>
                   <th width="5%"></th>
                 </tr>
               </thead>
@@ -223,21 +228,21 @@ class Project extends Component {
                 {this.state.itensFiltered.map(item =>
                   <tr key={item.id.toString()}>
                     <td><a href={`/#/projectItem?id=${item.id}`}><b>{item.name}</b></a></td>
-                    <td>{item.stageid}</td>
-                    <td>
+                    <td className='text-center'>
                       {item.enddate ? moment(item.enddate).format('DD/MM/YYYY') : [moment(item.expectedenddate).format('DD/MM/YYYY'), <sub> previsão</sub>]}</td>
-                    <td>
-                      {/* {item.visibility ? <i className="fa fa-eye" style={{fontSize: '20px'}}></i> : <i className="fa fa-eye-slash" style={{color: '#a4a6a8', fontSize: '20px'}}></i>} */}
-                      <i className="fa fa-eye" style={{fontSize: '20px', marginLeft: '1.5em'}}></i>
+                    <td className='text-center'>
+                      {item.visibility && <i title='Visível para o cliente' onClick={() => this.toggleVisible(item.id)} className="pointer fa fa-eye" style={{fontSize: '20px'}}></i>}
+                      {!item.visibility && <i title='Oculto para o cliente' onClick={() => this.toggleVisible(item.id)} className="pointer fa fa-eye-slash" style={{color: '#a4a6a8', fontSize: '20px'}}></i>}
                     </td>
-                    <td>
-                      <i className="fa fa-clock-o text-warning" style={{fontSize: '20px', marginLeft: '0.5em'}}></i>
+                    <td className='text-center'>
+                      {item.visibility && <i title='Aguardando aprovação' className='fa fa-clock-o text-warning' style={{fontSize: '20px', marginLeft: '0.5em'}}></i>}
+                      {!item.visibility && <i title='Em andamento' className='fa fa-cogs text-info' style={{fontSize: '20px', marginLeft: '0.5em'}}></i>}
                     </td>
                     <td><a className="btn btn-sm btn-warning pull-right" href={`/#/projectAddItem?id=${item.id}&projectId=${item.projectid}`}><i className="fa fa-pencil"></i></a></td>
                   </tr>
                 )}
                 {this.state.itens.length === 0 &&
-                  <tr><td className='text-center' colSpan={4}>Nenhum item foi adicionado</td></tr>
+                  <tr><td className='text-center' colSpan={5}>Nenhum item foi adicionado</td></tr>
                 }
               </tbody>
             </Table>

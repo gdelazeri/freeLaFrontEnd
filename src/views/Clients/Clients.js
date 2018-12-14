@@ -133,29 +133,25 @@ class Clients extends Component {
               <CardBody>
                 <p>Refine sua busca:</p>
                 <Row>
-                  <Col md={2}>
+                  <Col md={4}>
                     <strong>Nome</strong>
                   </Col>
-                  <Col md={2}>
+                  <Col md={4}>
                     <strong>Email</strong>
                   </Col>
                 </Row>
-                <Row>
-                  <Col md={2}>
+                <Row style={{paddingBottom: '15px'}}>
+                  <Col md={4}>
                     <input className='form-control' type='text' value={this.state.filterName} onChange={(e) => this.handleInputFilter(e, 'filterName')} />
                   </Col>
-                  <Col md={2}>
+                  <Col md={4}>
                     <input className='form-control' type='text' value={this.state.filterEmail} onChange={(e) => this.handleInputFilter(e, 'filterEmail')} />
                   </Col>
+                  <Col md={4}>
+                    <button className="btn pull-right btn-sm btn btn-info ml-2" onClick={this.search}><i className="fa fa-search"></i> Buscar</button>
+                    <button className="btn pull-right btn-sm btn btn-warning" onClick={this.removeFilter}><i className="fa fa-eraser"></i> Remover Filtros</button>
+                  </Col>
                 </Row>
-                <Row style={{paddingTop: '10px', paddingBottom: '15px'}}>
-                  <Col md={2}>
-                    <button className="btn btn-sm btn btn-warning" onClick={this.removeFilter}><i className="fa fa-eraser"></i> Remover Filtros</button>
-                  </Col>
-                  <Col md={2}>
-                    <button className="btn pull-right btn-sm btn btn-info" onClick={this.search}><i className="fa fa-search"></i> Buscar</button>
-                  </Col>
-                </Row> 
                 <Table hover responsive className="table-outline mb-0 d-sm-table">
                   <thead className="thead-light">
                     <tr>

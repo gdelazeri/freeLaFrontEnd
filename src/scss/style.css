@@ -9894,3 +9894,7 @@ html body .app.flex-row.align-items-center {
 .text-bold {
   font-weight: bold;
 }
+
+.pointer {
+  cursor: pointer;
+}
