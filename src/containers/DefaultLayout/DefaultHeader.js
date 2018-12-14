@@ -14,6 +14,7 @@ const defaultProps = {};
 class DefaultHeader extends Component {
   logout() {
     sessionStorage.clear();
+    window.location.href = '/'
   }
 
   render() {
